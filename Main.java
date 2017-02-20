@@ -45,8 +45,6 @@ class Main {
       }
       fileReader.close();
 
-
-
     } catch (Exception e) { fatalError("There was a problem reading the file"); }
 
     // Invoke the Lexers' scan method to scan through the string

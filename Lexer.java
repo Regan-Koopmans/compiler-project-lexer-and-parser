@@ -8,9 +8,9 @@
 import java.util.ArrayList;
 
 class Lexer {
-  
-  // Helper function to neaten error messages. 
-  
+
+  // Helper function to neaten error messages.
+
   private ArrayList<Token> tokens;
 
   public void lexError(String message) {

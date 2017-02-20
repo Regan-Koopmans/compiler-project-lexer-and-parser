@@ -1,8 +1,13 @@
-hi
+"Hello"
 
-how are you?
+"this is a string"
 
+<
 
-public static void main() {
-  string
-}
+eq
+
+>
+
+and
+or
+not

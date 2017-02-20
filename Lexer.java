@@ -64,6 +64,16 @@ class Lexer {
     }
   }
 
+  public void addToken(TokenType type) {
+    tokens.add(new Token(type, currentWord));
+    currentWord = "";
+
+  }
+
+  public ArrayList<Token> getTokens() { return tokens; }
+
+  // The following boolean functions
+
   public boolean matchComparisonOperator(String word) {
     return word.matches("<|>|(eq)");
   }
@@ -72,12 +82,36 @@ class Lexer {
     return word.matches("(and)|(or)|(not)");
   }
 
-  public void addToken(TokenType type) {
-    tokens.add(new Token(type, currentWord));
-    currentWord = "";
-
+  public boolean matchNumberOp(String word) {
+    return word.matches("(add)|(sub)|(mult)");
   }
 
-  public ArrayList<Token> getTokens() { return tokens; }
+  public boolean matchAssignment(String word) {
+    return word.matches("=");
+  }
+
+  public boolean matchControl(String word) {
+    return word.matches("(if)|(then)|(for)|(else)|(while)");
+  }
+
+  public boolean matchIO(String word) {
+    return word.matches("(input)|(output)");
+  }
+
+  public boolean matchInteger(String word) {
+    return word.matches("0|(\d)*");
+  }
+
+  public boolean matchHalt(String word) {
+    return word.matches("halt");
+  }
+
+  public boolean matchVariable(String word) {
+    return word.matches("");
+  }
+
+  public boolean matchProcedure(String word) {
+    return word.matches("proc");
+  }
 
 }

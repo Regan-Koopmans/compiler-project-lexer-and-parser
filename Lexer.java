@@ -72,7 +72,8 @@ class Lexer {
 
   public ArrayList<Token> getTokens() { return tokens; }
 
-  // The following boolean functions
+  // The following boolean functions use Java's String.match() function
+  // to match tokens using the following regular expressions.
 
   public boolean matchComparisonOperator(String word) {
     return word.matches("<|>|(eq)");
@@ -99,7 +100,7 @@ class Lexer {
   }
 
   public boolean matchInteger(String word) {
-    return word.matches("0|(\d)*");
+    return word.matches("0|1(\d)*");
   }
 
   public boolean matchHalt(String word) {

@@ -7,17 +7,17 @@
 
 public enum TokenType {
 
-  Comparison  ("Comparison"),
-  BooleanOp   ("Boolean Operator"),
-  NumberOp    ("Number Operator"),
-  String      ("String"),
-  Assignment  ("Assignment"),
-  Control     ("Control"),
-  IO          ("IO"),
-  Integer     ("Integer"),
-  Halt        ("Halt"),
-  Variable    ("Variable"),
-  Procedure   ("Procedure");
+  Comparison         ("Comparison"),
+  BooleanOp          ("Boolean Operator"),
+  NumberOp           ("Number Operator"),
+  String             ("String"),
+  Assignment         ("Assignment"),
+  Control            ("Control"),
+  IO                 ("IO"),
+  Integer            ("Integer"),
+  Halt               ("Halt"),
+  UserDefinedName    ("User Defined Name"),
+  Procedure          ("Procedure");
 
   public final String name;
 

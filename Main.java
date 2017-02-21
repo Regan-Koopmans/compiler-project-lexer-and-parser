@@ -50,6 +50,7 @@ class Main {
     // Invoke the Lexers' scan method to scan through the string
 
     lex.scan(sb.toString());
+    System.out.println();
     for (Token token:lex.getTokens()) {
       System.out.println(token);
       System.out.println("");

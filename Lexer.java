@@ -5,8 +5,6 @@
 
 */
 
-
-
 import java.util.ArrayList;
 
 // Regarding to regular expressions.
@@ -20,6 +18,8 @@ class Lexer {
 
   private ArrayList<Token> tokens;
   private String currentWord = "";
+  private String prevWord;
+  private Token longestToken;
 
   public void lexError(String message) {
     System.out.println("Lexer Error: " + message);
@@ -36,38 +36,109 @@ class Lexer {
 
     tokens = new ArrayList<Token>();
 
-
+    longestToken = null;
     for (char c:input.toCharArray()) {
 
-      if (c != '\n') {
-        currentWord += c;
+      // add a single character to the currently mathcing word. Ignores newlines
+      if (c == '\n') {
+        c = ' ';
       }
+      currentWord += c;
+      currentWord = currentWord.replaceAll("^\\s+","");
+
+      // This block deals with recognising strings. This means strings implicitly
+      // take preference over all other tokens (which makes sense since any text
+      // should be allowed in  a string.
 
       if (c == '"') {
         if (parsingString) {
           parsingString = false;
-          addToken(TokenType.String);
+          addToken(new Token(TokenType.String, currentWord));
         } else {
           parsingString = true;
         }
-      } else {
+
+      } else if (!parsingString) {
+        boolean matchesAnyPattern = false;
+        // Matching different tokens
+
+        if (matchUserDefinedName(currentWord)) {
+          longestToken = new Token(TokenType.UserDefinedName, currentWord);
+          System.out.println("passed user defined name");
+          matchesAnyPattern = true;
+        }
 
         if (matchComparisonOperator(currentWord)) {
-          addToken(TokenType.Comparison);
+          longestToken = new Token(TokenType.Comparison, currentWord);
+          System.out.println("passed comparison");
+          matchesAnyPattern = true;
         }
 
         if (matchBooleanOperator(currentWord)) {
-          addToken(TokenType.BooleanOp);
+          longestToken = new Token(TokenType.BooleanOp, currentWord);
+          System.out.println("passed boolean op");
+          matchesAnyPattern = true;
         }
 
+        if (matchNumberOp(currentWord)) {
+          longestToken = new Token(TokenType.NumberOp, currentWord);
+          System.out.println("passed user defined name");
+          matchesAnyPattern = true;
+        }
+
+        if (matchAssignment(currentWord)) {
+          longestToken = new Token(TokenType.Assignment, currentWord);
+          System.out.println("passed assignment");
+          matchesAnyPattern = true;
+        }
+
+        if (matchControl(currentWord)) {
+          longestToken = new Token(TokenType.Control, currentWord);
+          System.out.println("passed control");
+          matchesAnyPattern = true;
+        }
+
+        if (matchIO(currentWord)) {
+          longestToken = new Token(TokenType.IO, currentWord);
+          System.out.println("passed IO");
+          matchesAnyPattern = true;
+        }
+
+        if (matchInteger(currentWord)) {
+          longestToken = new Token(TokenType.Integer, currentWord);
+          System.out.println("passed integer");
+          matchesAnyPattern = true;
+        }
+
+        if (matchHalt(currentWord)) {
+          longestToken = new Token(TokenType.Halt, currentWord);
+          System.out.println("passed halt");
+          matchesAnyPattern = true;
+        }
+
+        if (matchProcedure(currentWord)) {
+          longestToken = new Token(TokenType.Procedure, currentWord);
+          System.out.println("passed user defined name");
+          matchesAnyPattern = true;
+        }
+
+
+        if (!matchesAnyPattern && longestToken != null && !parsingString) {
+          addToken(longestToken);
+          currentWord = String.valueOf(c);
+        } else if (longestToken ==  null && !parsingString) {
+          System.out.println(currentWord);
+        }
       }
     }
   }
 
-  public void addToken(TokenType type) {
-    tokens.add(new Token(type, currentWord));
-    currentWord = "";
+  // adds a token the list of tokens and clears working word.
 
+  public void addToken(Token token) {
+    tokens.add(token);
+    currentWord = "";
+    longestToken = null;
   }
 
   public ArrayList<Token> getTokens() { return tokens; }
@@ -100,15 +171,17 @@ class Lexer {
   }
 
   public boolean matchInteger(String word) {
-    return word.matches("0|1(\d)*");
+    return word.matches("0|1(\\d)*");
   }
 
   public boolean matchHalt(String word) {
     return word.matches("halt");
   }
 
-  public boolean matchVariable(String word) {
-    return word.matches("");
+  public boolean matchUserDefinedName(String word) {
+    Pattern rgx = Pattern.compile("^[a-zA-Z0-9]+$");
+    Matcher mtch = rgx.matcher(word);
+    return mtch.find();
   }
 
   public boolean matchProcedure(String word) {

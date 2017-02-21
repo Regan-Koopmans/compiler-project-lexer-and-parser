@@ -60,6 +60,7 @@ class Lexer {
 
       } else if (!parsingString) {
         boolean matchesAnyPattern = false;
+        System.out.println("Matching for " + currentWord);
         // Matching different tokens
 
         if (matchUserDefinedName(currentWord)) {
@@ -194,7 +195,7 @@ class Lexer {
   }
 
   public boolean matchGrouping(String word) {
-    return word.matches("[{}();,]");
+    return word.matches("[{}();,]\\s*");
   }
 
 }

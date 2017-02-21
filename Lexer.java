@@ -137,6 +137,7 @@ class Lexer {
         }
       }
     }
+    if (longestToken != null) { addToken(longestToken); }
   }
 
   // adds a token the list of tokens and clears working word.

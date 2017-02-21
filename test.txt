@@ -1,26 +1,10 @@
 
 
-"Hello"
+proc main () {
+  var1 = 100;
+  if (var1 > 50 and 1 eq 1) {
+    myString = "Hello world";
+  }
 
-"this is a string"
-
-
-<
-eq
->
-and
-or
-not
-if
-
-1232
-10
-1
-var1
-
-if (this) {
-
+  output myString
 }
-
-
-{}

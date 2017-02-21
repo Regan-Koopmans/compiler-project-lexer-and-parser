@@ -41,7 +41,7 @@ class Main {
       String line;
 
       while ((line = reader.readLine()) != null) {
-        sb.append(line + " ");
+        sb.append(line + "\n");
       }
       fileReader.close();
 
@@ -50,5 +50,9 @@ class Main {
     // Invoke the Lexers' scan method to scan through the string
 
     lex.scan(sb.toString());
+    for (Token token:lex.getTokens()) {
+      System.out.println(token);
+      System.out.println("");
+    }
   }
 }

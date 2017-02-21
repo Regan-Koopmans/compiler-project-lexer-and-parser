@@ -122,6 +122,11 @@ class Lexer {
           matchesAnyPattern = true;
         }
 
+        if (matchGrouping(currentWord)) {
+          longestToken = new Token(TokenType.Grouping, currentWord);
+          System.out.println("passed grouping");
+          matchesAnyPattern = true;
+        }
 
         if (!matchesAnyPattern && longestToken != null && !parsingString) {
           addToken(longestToken);
@@ -186,6 +191,10 @@ class Lexer {
 
   public boolean matchProcedure(String word) {
     return word.matches("proc");
+  }
+
+  public boolean matchGrouping(String word) {
+    return word.matches("[{}();,]");
   }
 
 }

@@ -18,7 +18,8 @@ public enum TokenType {
   Halt               ("Halt"),
   UserDefinedName    ("User Defined Name"),
   Procedure          ("Procedure"),
-  Grouping           ("Grouping");
+  Grouping           ("Grouping"),
+  ShortString        ("Short String");
 
   public final String name;
 

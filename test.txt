@@ -1,10 +1,7 @@
-
-
 proc main () {
-  var1 = 100;
-  if (var1 > 50 and 1 eq 1) {
-    myString = "Hello world";
+  myint = 100;
+  mystring = apple;
+  if (myint > 100 and 1 eq 1) {
+    output mystring;
   }
-
-  output myString
 }

@@ -16,35 +16,35 @@ class Lexer {
 
   // Helper function to neaten error messages.
 
-  private ArrayList<Token> tokens;
+  private ArrayList<Token> tokens = new ArrayList<Token>();
   private String currentWord = "";
-  private String prevWord;
   private Token longestToken;
 
   public void lexError(String message) {
-    System.out.println("Lexer Error: " + message);
+    System.out.println("\nLexer Error: " + message + "\n");
+    System.out.println();
+    System.exit(0);
   }
 
   // Receieves a program in the form of a string.
   // Should traverse character by character, testing for possible
   // matches in the language and building a list of tokens.
 
-  public void scan(String input) {
+  public void scan(String input, Integer lineNumber) {
 
     // Flag that manages whether we are currently reading a quoted string
     boolean parsingString = false;
-
-    tokens = new ArrayList<Token>();
-
     longestToken = null;
-    for (char c:input.toCharArray()) {
+    char c;
+    int count = 0;
+    char [] charArray = input.toCharArray();
+    for (;count < charArray.length;count++) {
 
+      c = charArray[count];
       // add a single character to the currently mathcing word. Ignores newlines
-      if (c == '\n') {
-        c = ' ';
-      }
       currentWord += c;
-      currentWord = currentWord.replaceAll("^\\s+","");
+
+      currentWord = currentWord.replaceAll("^\\s","");
 
       // This block deals with recognising strings. This means strings implicitly
       // take preference over all other tokens (which makes sense since any text
@@ -53,11 +53,16 @@ class Lexer {
       if (c == '"') {
         if (parsingString) {
           parsingString = false;
-          addToken(new Token(TokenType.String, currentWord));
-        } else {
+          if (currentWord.matches("\"(\\w|\\s){0,8}\""))
+          {
+            addToken(new Token(TokenType.ShortString, currentWord));
+          } else {
+            lexError("On line " + lineNumber +  ": " + currentWord +
+              " does not fit the restrictions for short strings.");
+          }
+          } else {
           parsingString = true;
         }
-
       } else if (!parsingString) {
         boolean matchesAnyPattern = false;
         System.out.println("Matching for " + currentWord);
@@ -65,79 +70,73 @@ class Lexer {
 
         if (matchUserDefinedName(currentWord)) {
           longestToken = new Token(TokenType.UserDefinedName, currentWord);
-          System.out.println("passed user defined name");
           matchesAnyPattern = true;
         }
 
         if (matchComparisonOperator(currentWord)) {
           longestToken = new Token(TokenType.Comparison, currentWord);
-          System.out.println("passed comparison");
           matchesAnyPattern = true;
         }
 
         if (matchBooleanOperator(currentWord)) {
           longestToken = new Token(TokenType.BooleanOp, currentWord);
-          System.out.println("passed boolean op");
           matchesAnyPattern = true;
         }
 
         if (matchNumberOp(currentWord)) {
           longestToken = new Token(TokenType.NumberOp, currentWord);
-          System.out.println("passed user defined name");
           matchesAnyPattern = true;
         }
 
         if (matchAssignment(currentWord)) {
           longestToken = new Token(TokenType.Assignment, currentWord);
-          System.out.println("passed assignment");
           matchesAnyPattern = true;
         }
 
         if (matchControl(currentWord)) {
           longestToken = new Token(TokenType.Control, currentWord);
-          System.out.println("passed control");
           matchesAnyPattern = true;
         }
 
         if (matchIO(currentWord)) {
           longestToken = new Token(TokenType.IO, currentWord);
-          System.out.println("passed IO");
           matchesAnyPattern = true;
         }
 
         if (matchInteger(currentWord)) {
           longestToken = new Token(TokenType.Integer, currentWord);
-          System.out.println("passed integer");
           matchesAnyPattern = true;
         }
 
         if (matchHalt(currentWord)) {
           longestToken = new Token(TokenType.Halt, currentWord);
-          System.out.println("passed halt");
           matchesAnyPattern = true;
         }
 
         if (matchProcedure(currentWord)) {
           longestToken = new Token(TokenType.Procedure, currentWord);
-          System.out.println("passed user defined name");
           matchesAnyPattern = true;
         }
 
         if (matchGrouping(currentWord)) {
           longestToken = new Token(TokenType.Grouping, currentWord);
-          System.out.println("passed grouping");
+          System.out.println(currentWord + " passed grouping.");
           matchesAnyPattern = true;
         }
 
         if (!matchesAnyPattern && longestToken != null && !parsingString) {
           addToken(longestToken);
-          currentWord = String.valueOf(c);
+          count--;
         } else if (longestToken ==  null && !parsingString) {
-          System.out.println(currentWord);
         }
       }
     }
+
     if (longestToken != null) { addToken(longestToken); }
+    if (!currentWord.equals("")) {
+      lexError("On line " + lineNumber + ": \"" + currentWord +
+        "\" does not match any token specification.");
+    }
   }
 
   // adds a token the list of tokens and clears working word.
@@ -178,7 +177,7 @@ class Lexer {
   }
 
   public boolean matchInteger(String word) {
-    return word.matches("0|1(\\d)*");
+    return word.matches("0|(\\d)*");
   }
 
   public boolean matchHalt(String word) {
@@ -186,7 +185,7 @@ class Lexer {
   }
 
   public boolean matchUserDefinedName(String word) {
-    Pattern rgx = Pattern.compile("^[a-zA-Z0-9]+$");
+    Pattern rgx = Pattern.compile("^[a-z][a-z]*[1-9]*$");
     Matcher mtch = rgx.matcher(word);
     return mtch.find();
   }
@@ -196,7 +195,9 @@ class Lexer {
   }
 
   public boolean matchGrouping(String word) {
-    return word.matches("[{}();,]\\s*");
+    Pattern rgx = Pattern.compile("^[\\(\\)\\{\\};,]$");
+    Matcher mtch = rgx.matcher(word);
+    return mtch.find();
   }
 
 }

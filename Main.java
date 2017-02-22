@@ -39,18 +39,16 @@ class Main {
       FileReader fileReader = new FileReader(inputFile);
       BufferedReader reader = new BufferedReader(fileReader);
       String line;
+      int lineNumber = 1;
 
       while ((line = reader.readLine()) != null) {
-        sb.append(line + "\n");
+        lex.scan(line, lineNumber);
+        lineNumber++;
       }
       fileReader.close();
 
     } catch (Exception e) { fatalError("There was a problem reading the file"); }
 
-    // Invoke the Lexers' scan method to scan through the string
-
-    lex.scan(sb.toString());
-    System.out.println("Results");
     for (Token token:lex.getTokens()) {
       System.out.println(token);
       System.out.println("");

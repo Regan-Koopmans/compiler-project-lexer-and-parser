@@ -65,7 +65,6 @@ class Lexer {
         }
       } else if (!parsingString) {
         boolean matchesAnyPattern = false;
-        System.out.println("Matching for " + currentWord);
         // Matching different tokens
 
         if (matchUserDefinedName(currentWord)) {
@@ -120,7 +119,6 @@ class Lexer {
 
         if (matchGrouping(currentWord)) {
           longestToken = new Token(TokenType.Grouping, currentWord);
-          System.out.println(currentWord + " passed grouping.");
           matchesAnyPattern = true;
         }
 

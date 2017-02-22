@@ -3,5 +3,7 @@ proc main () {
   mystring = apple;
   if (myint > 100 and 1 eq 1) {
     output mystring;
+    output "string";
+    input APPLE;
   }
 }

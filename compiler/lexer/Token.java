@@ -4,7 +4,7 @@
     DESCRIPTION : Encapsulates a token in the language, used in Lexer.
 
 */
-
+package compiler.lexer;
 
 public class Token {
 

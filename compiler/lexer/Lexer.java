@@ -5,6 +5,7 @@
 
 */
 
+package compiler.lexer;
 import java.util.ArrayList;
 
 // Regarding to regular expressions.
@@ -12,7 +13,7 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-class Lexer {
+public class Lexer {
 
   // Helper function to neaten error messages.
 

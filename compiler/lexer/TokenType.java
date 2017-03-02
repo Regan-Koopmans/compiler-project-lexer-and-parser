@@ -4,6 +4,7 @@
     DESCRIPTION : Defines a valid token type in the language.
 
 */
+package compiler.lexer;
 
 public enum TokenType {
 

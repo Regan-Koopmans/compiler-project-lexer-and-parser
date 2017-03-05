@@ -15,6 +15,9 @@ public class SyntaxNode {
     private NodeType type;
     private ArrayList<SyntaxNode> children = null;
 
+
+    // Some logic to make printing the tree more presentable :)
+
     public String toString(String prefix) {
         StringBuilder sb = new  StringBuilder();
         sb.append(type.toString() + "\n");
@@ -32,12 +35,17 @@ public class SyntaxNode {
         return toString("");
     }
 
+    // A function that adds n children to a node
+
     public void addChildren(SyntaxNode...newChildren) {
         if (children == null) { children = new ArrayList<SyntaxNode>(); }
         for (SyntaxNode child:newChildren) {
             children.add(child);
         }
     }
+
+
+    // Constructor
 
     public SyntaxNode(NodeType type) {
         this.type = type;

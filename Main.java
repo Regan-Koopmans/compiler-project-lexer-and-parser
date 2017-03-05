@@ -2,7 +2,7 @@
 
     CLASS       : Main
     DESCRIPTION : Manages the reading of files and provides an entry point to
-                  the Lexer class.
+                  the Lexer and Parser classes.
 
 */
 
@@ -30,12 +30,12 @@ class Main {
     }
 
     // Create an instance of the Lexer class.
-
     Lexer lex = new Lexer();
+
+    // Create an instance of the Parser class
     Parser parser = new Parser();
 
     // Create String from file.
-
     StringBuilder sb = new StringBuilder();
     File inputFile = new File(args[0]);
 
@@ -57,6 +57,9 @@ class Main {
       System.out.println(token);
       System.out.println("");
     }
+
+    // Invoke the parser, passing the list of tokens
     parser.parse(lex.getTokens());
+    System.out.println(parser.getTree());
   }
 }

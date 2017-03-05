@@ -44,7 +44,6 @@ public class Lexer {
       c = charArray[count];
       // add a single character to the currently mathcing word. Ignores newlines
       currentWord += c;
-
       currentWord = currentWord.replaceAll("^\\s","");
 
       // This block deals with recognising strings. This means strings implicitly
@@ -56,7 +55,7 @@ public class Lexer {
           parsingString = false;
           if (currentWord.matches("\"(\\w|\\s){0,8}\""))
           {
-            addToken(new Token(TokenType.ShortString, currentWord));
+            addToken(new Token(TokenType.ShortString, currentWord, count));
           } else {
             lexError("On line " + lineNumber +  ": " + currentWord +
               " does not fit the restrictions for short strings.");
@@ -69,57 +68,57 @@ public class Lexer {
         // Matching different tokens
 
         if (matchUserDefinedName(currentWord)) {
-          longestToken = new Token(TokenType.UserDefinedName, currentWord);
+          longestToken = new Token(TokenType.UserDefinedName, currentWord, lineNumber);
           matchesAnyPattern = true;
         }
 
         if (matchComparisonOperator(currentWord)) {
-          longestToken = new Token(TokenType.Comparison, currentWord);
+          longestToken = new Token(TokenType.Comparison, currentWord, lineNumber);
           matchesAnyPattern = true;
         }
 
         if (matchBooleanOperator(currentWord)) {
-          longestToken = new Token(TokenType.BooleanOp, currentWord);
+          longestToken = new Token(TokenType.BooleanOp, currentWord, lineNumber);
           matchesAnyPattern = true;
         }
 
         if (matchNumberOp(currentWord)) {
-          longestToken = new Token(TokenType.NumberOp, currentWord);
+          longestToken = new Token(TokenType.NumberOp, currentWord, lineNumber);
           matchesAnyPattern = true;
         }
 
         if (matchAssignment(currentWord)) {
-          longestToken = new Token(TokenType.Assignment, currentWord);
+          longestToken = new Token(TokenType.Assignment, currentWord, lineNumber);
           matchesAnyPattern = true;
         }
 
         if (matchControl(currentWord)) {
-          longestToken = new Token(TokenType.Control, currentWord);
+          longestToken = new Token(TokenType.Control, currentWord, lineNumber);
           matchesAnyPattern = true;
         }
 
         if (matchIO(currentWord)) {
-          longestToken = new Token(TokenType.IO, currentWord);
+          longestToken = new Token(TokenType.IO, currentWord, lineNumber);
           matchesAnyPattern = true;
         }
 
         if (matchInteger(currentWord)) {
-          longestToken = new Token(TokenType.Integer, currentWord);
+          longestToken = new Token(TokenType.Integer, currentWord, lineNumber);
           matchesAnyPattern = true;
         }
 
         if (matchHalt(currentWord)) {
-          longestToken = new Token(TokenType.Halt, currentWord);
+          longestToken = new Token(TokenType.Halt, currentWord, lineNumber);
           matchesAnyPattern = true;
         }
 
         if (matchProcedure(currentWord)) {
-          longestToken = new Token(TokenType.Procedure, currentWord);
+          longestToken = new Token(TokenType.Procedure, currentWord, lineNumber);
           matchesAnyPattern = true;
         }
 
         if (matchGrouping(currentWord)) {
-          longestToken = new Token(TokenType.Grouping, currentWord);
+          longestToken = new Token(TokenType.Grouping, currentWord, lineNumber);
           matchesAnyPattern = true;
         }
 

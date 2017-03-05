@@ -7,6 +7,7 @@
 */
 
 import compiler.lexer.*;
+import compiler.parser.*;
 
 import java.io.File;
 import java.io.FileReader;
@@ -31,6 +32,7 @@ class Main {
     // Create an instance of the Lexer class.
 
     Lexer lex = new Lexer();
+    Parser parser = new Parser();
 
     // Create String from file.
 
@@ -55,5 +57,6 @@ class Main {
       System.out.println(token);
       System.out.println("");
     }
+    parser.parse(lex.getTokens());
   }
 }

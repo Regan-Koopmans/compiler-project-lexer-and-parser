@@ -9,11 +9,13 @@ package compiler.parser;
 
 import java.lang.StringBuilder;
 import java.util.ArrayList;
+import compiler.lexer.Token;
 
 public class SyntaxNode {
     
     private NodeType type;
     private ArrayList<SyntaxNode> children = null;
+    private String value;
 
 
     // Some logic to make printing the tree more presentable :)
@@ -49,5 +51,13 @@ public class SyntaxNode {
 
     public SyntaxNode(NodeType type) {
         this.type = type;
+    }
+
+    public SyntaxNode(Token token) {
+        this.type = NodeType.fromTokenType(token.getType());
+    }
+
+    public NodeType getType() {
+        return type;
     }
 }

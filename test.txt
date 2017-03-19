@@ -1,8 +1,2 @@
-proc main () {
-  myint = 100;
-  mystring = apple;
-  if (myint > 100 and 1 eq 1) {
-    output mystring;
-    output "string";
-  }
-}
+hello = 1;
+output(hello);

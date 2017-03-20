@@ -9,9 +9,13 @@ package compiler.parser;
 
 import compiler.lexer.TokenType;
 
+// NodeType allows us to discern between SyntaxNodes. This allows us to
+// perform reductions more easily in Parser.java 
+
 public enum NodeType {
 
-  // Terminals
+  // Terminals - These are the types of Nodes that represent leaf symbols in the language.
+  //             These types correspond directly to the types defined in TokenType.
 
   Comparison         ("Comparison"),
   BooleanOp          ("Boolean Operator"),
@@ -45,7 +49,8 @@ public enum NodeType {
   }
 
   // Translates between Token types and node types. Used for the "leaves"
-  // of the tree.
+  // of the tree. This code is not integral to the parsing logic, and it only
+  // serves to translate between a Token to a Syntax Node in a a tree.
 
   public static NodeType fromTokenType(TokenType token) {
     NodeType coercedType = IO;

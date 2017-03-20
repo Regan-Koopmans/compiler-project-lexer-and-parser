@@ -1,7 +1,7 @@
 /*
 
     CLASS       : SyntaxNode
-    DESCRIPTION : An data type representing a node in the syntax tree
+    DESCRIPTION : An data type representing a node in the syntax tree and parse stack.
 
 */
 
@@ -10,6 +10,50 @@ package compiler.parser;
 import java.lang.StringBuilder;
 import java.util.ArrayList;
 import compiler.lexer.Token;
+
+// This class is used to encapsulate a unit of syntax. This includes both
+// leaves, which are tokens that appear in the source code, or higher-level
+// concepts that we obtain from the production rules.
+
+// Therefore, using the sytax node, we can build data structures that look
+// like this:                              ---------------------
+
+
+//                           SYNTAX TREE
+//                           ------------
+
+
+//                               [PROG]
+//                               /     \
+//                           [CODE]   [CODE]
+//                            /   \      
+//                       [INSTR]    [INSTR]
+//                      / |     \
+//                     /  |      \
+//                    /   |        \
+//                  /     |         \
+//                 /      |          \
+//    [UserDefinedName] [Assignment] [Integer] [Grouping]
+
+
+// And like this:
+
+//           PARSE STACK
+//           -----------
+
+
+//          top
+//      --------------------
+//      |      INSTR       | -------> containts it own children (it has been "reduced" from leaf).
+//      --------------------
+//      |        IO        | ---+
+//      ----------- -------|    |--- can still be reduced to an INSTR, perhaps on another iteration.
+//      | UserDefinedName  | ---+
+//      --------------------
+
+
+// Using the same basic data unit, namely, the SyntaxNode.
+//                ---------------              ----------
 
 public class SyntaxNode {
     

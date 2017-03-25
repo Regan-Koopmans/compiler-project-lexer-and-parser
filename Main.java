@@ -60,6 +60,5 @@ class Main {
 
     // Invoke the parser, passing the list of tokens
     parser.parse(lex.getTokens());
-    System.out.println(parser.getTree());
   }
 }

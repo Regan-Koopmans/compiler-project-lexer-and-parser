@@ -1,2 +1,7 @@
-hello = 1;
-output(hello);
+output(hi);
+input(hello);
+
+
+output(variable)
+
+halt

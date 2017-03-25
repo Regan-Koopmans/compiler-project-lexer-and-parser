@@ -58,6 +58,8 @@ class Main {
       System.out.println("");
     }
 
+    System.out.println("-----------------------------------");
+
     // Invoke the parser, passing the list of tokens
     parser.parse(lex.getTokens());
   }

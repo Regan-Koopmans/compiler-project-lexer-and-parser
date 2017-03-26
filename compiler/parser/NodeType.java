@@ -33,7 +33,14 @@ public enum NodeType {
 
   // Non Terminals
 
-  INSTR ("INSTR");
+  IOCALL ("IO-CALL"),
+  BOOL   ("BOOL"),
+  CODE   ("CODE"),
+  VAR    ("VAR"),
+  SVAR   ("SVAR"),
+  NVAR   ("NVAR"),
+  PROG   ("PROG"),
+  INSTR  ("INSTR");
 
   // NEED TO ADD MORE OF THESE (eg. PROG and CODE etc)
 

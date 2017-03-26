@@ -7,7 +7,7 @@
 
 package compiler.parser;
 
-import java.lang.StringBuilder;
+//import java.lang.StringBuilder;
 import java.util.ArrayList;
 import compiler.lexer.Token;
 
@@ -65,16 +65,17 @@ public class SyntaxNode {
     // Some logic to make printing the tree more presentable :)
 
     public String toString(String prefix) {
-        StringBuilder sb = new  StringBuilder();
-        sb.append(type.toString() + "\n");
-        if (children != null) {
-            for (SyntaxNode child : children) {
-                sb.append(prefix + "   |\n");
-                sb.append(prefix + "   |---" + child.toString("   |") + "\n");
-            }
-            return sb.toString();
-        }
-        else return type.toString();
+        // StringBuilder sb = new  StringBuilder();
+        // sb.append(type.toString() + "\n");
+        // if (children != null) {
+        //     for (SyntaxNode child : children) {
+        //         sb.append(prefix + "   |\n");
+        //         sb.append(prefix + "   |---" + child.toString("   |") + "\n");
+        //     }
+        //     return sb.toString();
+        // }
+        // else return type.toString();
+        return type.toString();
     }
 
     public String toString() {
@@ -84,12 +85,18 @@ public class SyntaxNode {
     // A function that adds n children to a node
 
     public void addChildren(SyntaxNode...newChildren) {
-        if (children == null) { children = new ArrayList<SyntaxNode>(); }
+        if (children == null) { children = new ArrayList<SyntaxNode>();}
         for (SyntaxNode child:newChildren) {
             children.add(child);
         }
     }
 
+    public void addChildren(ArrayList<SyntaxNode> newChildren) {
+        if (children == null) { children = new ArrayList<SyntaxNode>();}
+        for (SyntaxNode child:newChildren) {
+            children.add(child);
+        }
+    }
 
     // Constructor
 
@@ -101,7 +108,19 @@ public class SyntaxNode {
         this.type = NodeType.fromTokenType(token.getType());
     }
 
+    public SyntaxNode(Token token, String value) {
+        this.type = NodeType.fromTokenType(token.getType());
+        this.value = value;
+    }
+
     public NodeType getType() {
         return type;
+    }
+
+    public String getValue() {
+        if (value != null) {
+            return value;
+        }
+        else return "";
     }
 }

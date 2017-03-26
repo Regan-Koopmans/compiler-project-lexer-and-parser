@@ -1,7 +1,6 @@
 output(hi);
 input(hello);
 
-
-output(variable)
+output(var);
 
 halt

@@ -64,9 +64,9 @@ public class Parser {
         }
 
         if (stack.size() != 1) {
-            System.out.println("SyntaxError!");
+            System.out.println("Syntax error!");
         } else {
-            System.out.println("Program parsed!");
+            System.out.println("Program passed!");
         }
 
         // I am just printing the stack here to see if anything

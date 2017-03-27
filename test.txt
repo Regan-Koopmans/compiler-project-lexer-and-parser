@@ -1,6 +1,2 @@
-output(hi);
-input(hello);
-
-output(var);
-
-halt
+hello = "hello";
+if ((a < a)) then { output(hello) }

@@ -43,8 +43,8 @@ public class Parser {
       if(shiftProg())
       {
         /*
-         * if tokens is not empty after shiftProg() is finished executing then 
-         * there must be an grouping token at the end of the lost, which most
+         * if the tokens list is not empty after shiftProg() is finished executing then 
+         * there must be a grouping token at the end of the list, which most
          * likely is never used
          */
         if(tokens.size()>0)
@@ -66,7 +66,7 @@ public class Parser {
        * PROG-> CODE;PROC_DEFS
        * 
        * if the token list still has something then we will keep traversing
-       * and everytime we traverse it, we literally removing the front element
+       * and everytime we traverse it, we literally remove the front element
        * That is why you will mostly see tokens.get(0) and tokens.remove(0)
        * 
        */ 
@@ -110,8 +110,9 @@ public class Parser {
                  * 
                  * temp=[tom][=][jane][;]
                  * 
-                 * I don't reduce in the traditional sense. I am not creating  tree as we go along 
+                 * I don't reduce in the traditional sense. I am not creating a tree as we go along 
                  * but it can easily be converted to reduce by either sending to a designated stack
+                 * or creating the tree as we traverse the list
                  * 
                  * At the end of it I remove the (;) token so as to move on
                  * 
@@ -120,9 +121,9 @@ public class Parser {
               else if(tokens.size()>0)
               {
                 /*
-                 * This is when check the size of the token list so we know what type of error message to print
+                 * This is when check we the size of the token list so we know what type of error message to print
                  * 
-                 * in this case say we have:
+                 * in this case, say we have:
                  * 
                  * temp=[tom][=][jane]
                  * tokens=[{]
@@ -203,6 +204,7 @@ public class Parser {
                */
               tokens.remove(t);
               ArrayList<Token> temp=new ArrayList<Token>();
+              temp.add(t);
               if(!shiftControl(temp))
                 return false;
             }
@@ -215,7 +217,7 @@ public class Parser {
              * lexer=[}]
              * 
              * we just return true and the parse() will first check if the tokens list is empty before prematurely declaring 
-             * that we parsed the code prematurely
+             * that we parsed the code successfully
              * 
              */ 
             else if(t.getValue().compareTo("}")==0) 
@@ -481,7 +483,7 @@ public class Parser {
            * tokens=[ integer ][ , ][ integer ][ ) ]
            * 
            */ 
-          if(tokens.get(0).getType()==TokenType.Integer)
+          if(tokens.get(0).getType()==TokenType.Integer || tokens.get(0).getType()==TokenType.UserDefined)
           {
             temp.add(tokens.remove(0));
             /*
@@ -503,7 +505,7 @@ public class Parser {
                * tokens=[ integer ][ ) ]
                * 
                */
-              if(tokens.get(0).getType()==TokenType.Integer)
+              if(tokens.get(0).getType()==TokenType.Integer || tokens.get(0).getType()==TokenType.UserDefined)
               {
                 temp.add(tokens.remove(0));
                 /*
@@ -556,7 +558,7 @@ public class Parser {
                */ 
               else
               {
-                parsingError(tokens.get(0).toString()+"\nExpected integer type");
+                parsingError(tokens.get(0).toString()+"\nExpected integer or user defined name type of token");
                 return false;
               }
             }
@@ -588,7 +590,7 @@ public class Parser {
            */ 
           else
           {
-            parsingError(temp.get(temp.size()-1).toString()+"\nExpected integer type");
+            parsingError(temp.get(temp.size()-1).toString()+"\nExpected integer or user defined type of token");
             return false;
           }
         }

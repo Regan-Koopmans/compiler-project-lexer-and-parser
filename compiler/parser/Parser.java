@@ -79,7 +79,26 @@ public class Parser {
            * We check if the token at the beginning is a user defined name
            * 
            */ 
-            if(NodeType.fromTokenType(t.getType())==NodeType.UserDefinedName)
+            if(NodeType.fromTokenType(t.getType())==NodeType.Halt)
+            {
+                tokens.remove(0);
+                if(tokens.size()>0)
+                {
+                    if(tokens.get(0).getValue().compareTo(";")!=0)
+                    {
+                        parsingError("\n"+tokens.get(0).toString()+"\nExpected \";\" symbol");
+                        return false;
+                    }
+                    else
+                        tokens.remove(0);
+                }
+                else
+                {
+                    parsingError("\n"+t.toString()+"\nExpected input");
+                    return false;
+                }
+          }
+          else if(NodeType.fromTokenType(t.getType())==NodeType.UserDefinedName)
             {
               ArrayList<Token> temp=new ArrayList<Token>();
               // remove the element
@@ -220,6 +239,26 @@ public class Parser {
              * that we parsed the code successfully
              * 
              */ 
+            else if(tokens.get(0).getType()==TokenType.IO)
+            { 
+                if(!shiftIO())
+                    return false;
+                if(tokens.size()>0)
+                {
+                    if(tokens.get(0).getValue().compareTo(";")==0)
+                        tokens.remove(0);
+                    else
+                    {
+                        parsingError("\n"+tokens.get(0).toString()+"\nExpected \";\" symbol");
+                        return false;
+                    }
+                }
+                else
+                {
+                    parsingError("Expected input at:\n"+t.toString());
+                    return false;
+                }
+          }
             else if(t.getValue().compareTo("}")==0) 
               return true;
             /*
@@ -424,6 +463,39 @@ public class Parser {
     
     private boolean shiftIO(ArrayList<Token> temp)
     {
+      Token t=tokens.remove(0);
+      if(tokens.size()>0)
+      {
+        if(tokens.get(0).getValue().compareTo("(")==0)
+        {
+          t=tokens.remove(0);
+          if(tokens.size()>0)
+          {
+            t=tokens.remove(0);
+            if(t.getType()==TokenType.Integer || t.getType()==TokenType.UserDefinedName)
+            {
+              if(tokens.size()>0)
+              {
+                t=tokens.remove(0);
+                if(t.getValue().compareTo(")")==0)
+                  return true;
+                else
+                  parsingError("\n"+t.toString()+"\nExpected \")\" symbol");
+              }
+              else
+                parsingError("\n"+t.toString()+"\nExpected input");
+            }
+            else
+              parsingError("\n"+t.toString()+"\nExpected integer or user defined name token type");
+          }
+          else
+            parsingError("\n"+t.toString()+"\nExpected input");
+        }
+        else
+          parsingError("\n"+tokens.get(0).toString()+"\nExpected \"(\" symbol");
+      }
+      else
+        parsingError("Expected input");
       return false;
     }
     private boolean shiftBooleanOp(ArrayList<Token>temp)
@@ -437,6 +509,14 @@ public class Parser {
     }
     private boolean shiftShortString(ArrayList<Token> temp)
     {
+      if(tokens.size()>=2)
+        return false;
+      if(tokens.get(0).getType()==TokenType.Assignment && tokens.get(1).getType()==TokenType.ShortString)
+      {
+        temp.add(tokens.remove(0));
+        temp.add(tokens.remove(0));
+        return true;
+      }
       return false;
     }
     

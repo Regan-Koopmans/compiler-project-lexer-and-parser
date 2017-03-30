@@ -45,7 +45,7 @@ public class Parser {
         for (Token t : tokens) {
             shift(t);
             reduce();
-            System.out.println(stack);
+            // System.out.println(stack);
         }
 
 
@@ -55,6 +55,8 @@ public class Parser {
     
 
         ArrayList<SyntaxNode> testSymbols = stack.peek(stack.size());
+        Collections.reverse(testSymbols);
+
         if (reducePROG(testSymbols)) {
             stack.pop(stack.size());
             SyntaxNode reducedNode = new SyntaxNode(PROG);
@@ -182,19 +184,19 @@ public class Parser {
                 return true;
             }
             
+            if (reduceCOND_LOOP(testSymbols)) {
+                stack.pop(size-x);
+                reducedNode = new SyntaxNode(COND_LOOP);
+                reducedNode.addChildren(testSymbols);
+                stack.push(reducedNode);
+                reduce();
+                return true;
+            }
+
         }
         
         return reduceMade;
     }
-
-    // This is an example of a reduce function. In this case,
-    // it reduces tokens of the form.
-
-    // "variable = number;" (which are the tokens UDN, Assignment, Integer, Grouping) 
-
-    // to: 
-
-    // "INSTR"
 
     public boolean reduceINSTR(ArrayList<SyntaxNode> testSymbols) {
 
@@ -203,7 +205,8 @@ public class Parser {
             if (   test.getType() == Halt 
                 || test.getType() == IOCALL
                 || test.getType() == ASSIGN
-                || test.getType() == COND_BRANCH) {
+                || test.getType() == COND_BRANCH
+                || test.getType() == COND_LOOP) {
                 return true;
             }
         }
@@ -217,15 +220,6 @@ public class Parser {
         }
         return false;
     }
-
-    // function to check if the parameter array testSymbols can reduce
-    // to an IO call. IO calls are of the following format:
-
-    //   output    (   VAR    )
-    //   input     (   VAR    )
-
-    // so we check that the size is 4, that the list starts with either
-    // "output" or "input" and then that the rest is as expected.
 
     public boolean reduceIOCall(ArrayList<SyntaxNode> testSymbols) {
         if (testSymbols.size() == 4) {
@@ -268,7 +262,6 @@ public class Parser {
             if (testSymbols.get(0).getType() == INSTR) {
                 return true;
             }
-
 
         } else if (size == 3) {
             
@@ -329,7 +322,8 @@ public class Parser {
 
             } else {
 
-                if (testSymbols.get(0).getValue().equals("not") && testSymbols.get(1).getType() == BOOL) {
+                if (testSymbols.get(0).getValue().equals("not") 
+                    && testSymbols.get(1).getType() == BOOL) {
                     return true;
                 }
             }
@@ -356,6 +350,9 @@ public class Parser {
         if (testSymbols.size() == 1) {
             if (testSymbols.get(0).getType() == Integer 
                 || testSymbols.get(0).getType() == CALC) {
+                    if (testSymbols.get(0).getType() == Integer) {
+                        System.out.println("Reducing from integer");
+                    }
                 return true;
             }
         }
@@ -368,10 +365,18 @@ public class Parser {
             if (testSymbols.get(0).getType() == CODE) {
                 return true;
             }
-        }
-        else if (size == 3) {
-            if (testSymbols.get(0).getType() == CODE) {
-                return truel
+        } else if (size == 2) {
+
+            if (testSymbols.get(0).getType() == CODE
+                && testSymbols.get(1).getValue().equals(";")) {
+
+                return true;
+            } else { System.out.println("NOO " + testSymbols);}
+        } else if (size == 3) {
+            if (testSymbols.get(0).getType() == CODE
+                && testSymbols.get(1).getValue().equals(";")
+                && testSymbols.get(2).getType() == PROC_DEFS) {
+                return true;
             }
         } 
         return false;
@@ -389,6 +394,28 @@ public class Parser {
     }
 
     public boolean reduceCOND_LOOP(ArrayList<SyntaxNode> testSymbols) {
+        int size = testSymbols.size();
+        if (size == 7) {
+            if (testSymbols.get(0).getValue().equals("while") 
+                && testSymbols.get(1).getValue().equals("(")
+                && testSymbols.get(2).getType() == BOOL
+                && testSymbols.get(3).getValue().equals(")")
+                && testSymbols.get(4).getValue().equals("{")
+                && testSymbols.get(5).getType() == CODE
+                && testSymbols.get(6).getValue().equals("}")) {
+                    return true;
+            }
+        } else if (size == 22) {
+            if (testSymbols.get(0).getValue().equals("for") 
+                && testSymbols.get(1).getValue().equals("(")
+                && testSymbols.get(2).getType() == BOOL
+                && testSymbols.get(3).getValue().equals(")")
+                && testSymbols.get(4).getValue().equals("{")
+                && testSymbols.get(5).getType() == CODE
+                && testSymbols.get(6).getValue().equals("}")) {
+                    return true;
+            }
+        }
         return false;
     }
 

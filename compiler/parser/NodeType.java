@@ -43,6 +43,7 @@ public enum NodeType {
   NUMEXPR       ("NUMEXPR"),
   COND_BRANCH   ("COND_BRANCH"),
   COND_LOOP     ("COND_LOOP"),
+  PROC_DEFS     ("PROC_DEFS"),
   PROG          ("PROG"),
   CALC          ("CALC"),
   INSTR         ("INSTR");

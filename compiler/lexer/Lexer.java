@@ -45,6 +45,7 @@ public class Lexer {
       // add a single character to the currently mathcing word. Ignores newlines
       currentWord += c;
       currentWord = currentWord.replaceAll("^\\s","");
+      currentWord = currentWord.trim();
 
       // This block deals with recognising strings. This means strings implicitly
       // take preference over all other tokens (which makes sense since any text

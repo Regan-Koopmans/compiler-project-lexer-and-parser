@@ -1,2 +1,13 @@
-hello = "hello";
-if ((a < a)) then { output(hello) }
+if ((a < b))
+then {
+	if ((a < c)) then {
+		output(bananas)
+	}
+};
+
+while (( a < a )) {
+	output(jim)
+}
+
+output(hello);
+halt;

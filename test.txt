@@ -1,5 +1,5 @@
-navup;
+if ((a < b)) 
+then {
+	output (hi)
+};
 
-proc navup {
-	output(hi)
-}

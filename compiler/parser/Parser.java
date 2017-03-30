@@ -108,7 +108,7 @@ public class Parser {
                 reducedNode = new SyntaxNode(VAR);
                 reducedNode.addChildren(testSymbols);
                 stack.push(reducedNode);
-                reduce();
+		reduce();
                 return true;
             }
 
@@ -117,7 +117,6 @@ public class Parser {
                 reducedNode = new SyntaxNode(CODE);
                 reducedNode.addChildren(testSymbols);
                 stack.push(reducedNode);
-                reduce();
                 return true;
             }
 
@@ -126,7 +125,7 @@ public class Parser {
                 reducedNode = new SyntaxNode(INSTR);
                 reducedNode.addChildren(testSymbols);
                 stack.push(reducedNode);
-                reduce();
+		reduce();
                 return true;
             }
 
@@ -135,7 +134,7 @@ public class Parser {
                 reducedNode = new SyntaxNode(IOCALL);
                 reducedNode.addChildren(testSymbols);
                 stack.push(reducedNode);
-                reduce();
+		reduce();
                 return true;
             }
 
@@ -144,7 +143,7 @@ public class Parser {
                 reducedNode = new SyntaxNode(ASSIGN);
                 reducedNode.addChildren(testSymbols);
                 stack.push(reducedNode);
-                reduce();
+		reduce();
                 return true;
             }
 
@@ -153,7 +152,7 @@ public class Parser {
                 reducedNode = new SyntaxNode(CALC);
                 reducedNode.addChildren(testSymbols);
                 stack.push(reducedNode);
-                reduce();
+		reduce();
                 return true;
             }
 
@@ -162,7 +161,7 @@ public class Parser {
                 reducedNode = new SyntaxNode(BOOL);
                 reducedNode.addChildren(testSymbols);
                 stack.push(reducedNode);
-                reduce();
+		reduce();
                 return true;
             }
 
@@ -171,7 +170,7 @@ public class Parser {
                 reducedNode = new SyntaxNode(NUMEXPR);
                 reducedNode.addChildren(testSymbols);
                 stack.push(reducedNode);
-                reduce();
+		reduce();
                 return true;
             }
 
@@ -180,7 +179,7 @@ public class Parser {
                 reducedNode = new SyntaxNode(COND_BRANCH);
                 reducedNode.addChildren(testSymbols);
                 stack.push(reducedNode);
-                reduce();
+		reduce();
                 return true;
             }
             
@@ -189,18 +188,26 @@ public class Parser {
                 reducedNode = new SyntaxNode(COND_LOOP);
                 reducedNode.addChildren(testSymbols);
                 stack.push(reducedNode);
-                reduce();
+		reduce();
                 return true;
             }
 
-	    if (reduce)
+	    if (reduceCALL(testSymbols)) {
+	    	stack.pop(size-x);
+		reducedNode = new SyntaxNode(CALL);
+		reducedNode.addChildren(testSymbols);
+		stack.push(reducedNode);
+		reduce();
+		return true;
+
+	    }
 
             if (reducePROC(testSymbols)) {
                 stack.pop(size-x);
                 reducedNode = new SyntaxNode(PROC);
                 reducedNode.addChildren(testSymbols);
                 stack.push(reducedNode);
-                reduce();
+		reduce();
                 return true;
             }
 
@@ -233,6 +240,7 @@ public class Parser {
             if (   test.getType() == Halt 
                 || test.getType() == IOCALL
                 || test.getType() == ASSIGN
+		|| test.getType() == CALL
                 || test.getType() == COND_BRANCH
                 || test.getType() == COND_LOOP) {
                 return true;
@@ -394,15 +402,21 @@ public class Parser {
 
             if (testSymbols.get(0).getType() == CODE
                 && testSymbols.get(1).getValue().equals(";")) {
-
                 return true;
-            } 
+            }
+
+ 
         } else if (size == 3) {
             if (testSymbols.get(0).getType() == CODE
                 && testSymbols.get(1).getValue().equals(";")
                 && testSymbols.get(2).getType() == PROC_DEFS) {
                 return true;
             }
+	    if (testSymbols.get(0).getType() == PROG
+		&& testSymbols.get(1).getValue().equals(";")
+		&& testSymbols.get(2).getType() == PROC_DEFS) {
+  	    	return true;
+	    }
         } 
         return false;
     }

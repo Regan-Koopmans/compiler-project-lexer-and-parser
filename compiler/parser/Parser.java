@@ -193,6 +193,15 @@ public class Parser {
                 return true;
             }
 
+            if (reducePROC(testSymbols)) {
+                stack.pop(size-x);
+                reducedNode = new SyntaxNode(PROC);
+                reducedNode.addChildren(testSymbols);
+                stack.push(reducedNode);
+                reduce();
+                return true;
+            }
+
         }
         
         return reduceMade;
@@ -449,6 +458,22 @@ public class Parser {
 
 
 
+    public boolean reducePROC_DEFS(ArrayList<SyntaxNode> testSymbols) {
+        return false;
+    }
+
+
+    public boolean reducePROC(ArrayList<SyntaxNode> testSymbols) {
+        if (testSymbols.size() == 4) {
+            if (testSymbols.get(0).getType() == Procedure
+            && testSymbols.get(1).getValue().equals("{")
+            && testSymbols.get(2).getType() == PROG
+            && testSymbols.get(3).getValue().equals("}")) {
+                return true;
+            }
+        }        
+        return false;
+    }
 
     // Function to return a syntax tree. 
 

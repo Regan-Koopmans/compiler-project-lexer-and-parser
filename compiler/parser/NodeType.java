@@ -44,6 +44,7 @@ public enum NodeType {
   COND_BRANCH   ("COND_BRANCH"),
   COND_LOOP     ("COND_LOOP"),
   PROC_DEFS     ("PROC_DEFS"),
+  PROC     ("PROC"),
   PROG          ("PROG"),
   CALC          ("CALC"),
   INSTR         ("INSTR");

@@ -397,15 +397,7 @@ public class Parser {
         if (size == 1) {
             if (testSymbols.get(0).getType() == CODE) {
                 return true;
-            }
-        } else if (size == 2) {
-
-            if (testSymbols.get(0).getType() == CODE
-                && testSymbols.get(1).getValue().equals(";")) {
-                return true;
-            }
-
- 
+            } 
         } else if (size == 3) {
             if (testSymbols.get(0).getType() == CODE
                 && testSymbols.get(1).getValue().equals(";")
@@ -446,7 +438,7 @@ public class Parser {
             }
         } else if (size == 22) {
             if (testSymbols.get(0).getValue().equals("for") 
-                && testSymbols.get(1).getValue().equals("(")
+               && testSymbols.get(1).getValue().equals("(")
                 && testSymbols.get(2).getType() == BOOL
                 && testSymbols.get(3).getValue().equals(")")
                 && testSymbols.get(4).getValue().equals("{")
@@ -477,7 +469,7 @@ public class Parser {
             if (testSymbols.get(0).getType() == COND_BRANCH
                 && testSymbols.get(1).getValue().equals("else")
                 && testSymbols.get(2).getValue().equals("{")
-                && testSymbols.get(3).getType() == CODE
+                && (testSymbols.get(3).getType() == CODE || testSymbols.get(3).getType() == PROG)
                 && testSymbols.get(4).getValue().equals("}")) {
                     return true;
             }
@@ -494,7 +486,7 @@ public class Parser {
 	  if (testSymbols.get(0).getType() == PROC) {
 	  	return true;
 	  }
-
+	  
 	} else if (size == 2) {
 		
 	  if (testSymbols.get(0).getType() == PROC 

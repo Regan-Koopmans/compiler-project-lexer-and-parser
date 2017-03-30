@@ -1,5 +1,8 @@
-if ((a < b)) 
-then {
-	output (hi)
-};
+var1 = 2;
+var2 = "hello";
+
+if (()) then {
+  output(hi);
+  input(hi)
+}
 

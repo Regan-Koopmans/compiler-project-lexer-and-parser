@@ -1,1 +1,5 @@
-proc asdf
+if (( a < b )) 
+then
+{
+	output(hi)
+}

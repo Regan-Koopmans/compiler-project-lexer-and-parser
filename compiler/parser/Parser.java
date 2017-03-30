@@ -359,9 +359,6 @@ public class Parser {
         if (testSymbols.size() == 1) {
             if (testSymbols.get(0).getType() == Integer 
                 || testSymbols.get(0).getType() == CALC) {
-                    if (testSymbols.get(0).getType() == Integer) {
-                        System.out.println("Reducing from integer");
-                    }
                 return true;
             }
         }

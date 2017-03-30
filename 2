@@ -193,8 +193,6 @@ public class Parser {
                 return true;
             }
 
-	    if (reduce)
-
             if (reducePROC(testSymbols)) {
                 stack.pop(size-x);
                 reducedNode = new SyntaxNode(PROC);
@@ -203,15 +201,6 @@ public class Parser {
                 reduce();
                 return true;
             }
-
-	    if (reducePROC_DEFS(testSymbols)) {
-	    	stack.pop(size-x);
-		reducedNode = new SyntaxNode(PROC_DEFS);
-		reducedNode.addChildren(testSymbols);
-		stack.push(reducedNode);
-		reduce();
-		return true;
-	    }
 	    
 	    if (reducePROG(testSymbols)) {
  		stack.pop(size-x);
@@ -448,6 +437,7 @@ public class Parser {
         int size = testSymbols.size();
         if (size == 8) {
 
+
             if (testSymbols.get(0).getValue().equals("if") 
                 && testSymbols.get(1).getValue().equals("(")
                 && testSymbols.get(2).getType() == BOOL
@@ -474,20 +464,8 @@ public class Parser {
 
 
     public boolean reducePROC_DEFS(ArrayList<SyntaxNode> testSymbols) {
-	int size = testSymbols.size();
-
-	if (size == 1) {
-	  if (testSymbols.get(0).getType() == PROC) {
-	  	return true;
-	  }
-
-	} else if (size == 2) {
-		
-	  if (testSymbols.get(0).getType() == PROC 
-	      && testSymbols.get(0).getType() == PROC_DEFS) {	
-		return true;	  
- 	  } 
-
+	int size = testSymbols.size();        
+	if () {
 	}
 	return false;
     }
@@ -509,8 +487,7 @@ public class Parser {
 
     public boolean reduceCALL(ArrayList<SyntaxNode> testSymbols) {
    	if (testSymbols.size() == 2) {
-	   if (testSymbols.get(0).getType() == VAR
-	       && testSymbols.get(1).getValue().equals(";")) { 
+	   if () {
 	     return true;
  	   }	
 	}  

@@ -8,7 +8,7 @@ package compiler.lexer;
 
 public class Token {
 
-    private int lineNumber;
+    public int lineNumber;
     private TokenType type;
     private String value;
 

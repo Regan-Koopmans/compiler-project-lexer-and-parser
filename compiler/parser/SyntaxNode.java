@@ -60,36 +60,41 @@ public class SyntaxNode {
     private NodeType type;
     private ArrayList<SyntaxNode> children = null;
     private String value;
+    int lineNumber = -1;
 
 
     // Some logic to make printing the tree more presentable :)
 
-    public String toString(String prefix) {
-        // StringBuilder sb = new  StringBuilder();
-        // sb.append(type.toString() + "\n");
-        // if (children != null) {
-        //     for (SyntaxNode child : children) {
-        //         sb.append(prefix + "   |\n");
-        //         sb.append(prefix + "   |---" + child.toString("   |") + "\n");
-        //     }
-        //     return sb.toString();
-        // }
-        // else return type.toString();
-        return type.toString();
+    public void print() {
+        print("", true);
     }
 
-    public String toString() {
-        return toString("");
+    private void print(String prefix, boolean isTail) {
+
+        System.out.println(prefix + (isTail ? "└── " : "├── ") + type.toString());
+
+        if (children != null) {
+            for (int i = 0; i < children.size() - 1; i++) {
+            children.get(i).print(prefix + (isTail ? "    " : "│   "), false);
+            }
+            if (children.size() > 0) {
+                children.get(children.size() - 1)
+                    .print(prefix + (isTail ?"    " : "│   "), true);
+            }
+        }
+
+        
     }
 
     // A function that adds n children to a node
 
-    public void addChildren(SyntaxNode...newChildren) {
-        if (children == null) { children = new ArrayList<SyntaxNode>();}
-        for (SyntaxNode child:newChildren) {
-            children.add(child);
-        }
-    }
+    // public void addChildren(SyntaxNode...newChildren) {
+    //     if (children == null) { children = new ArrayList<SyntaxNode>();}
+    //     for (SyntaxNode child:newChildren) {
+    //         children.add(child);
+    //         System.out.println("Adding children");
+    //     }
+    // }
 
     public void addChildren(ArrayList<SyntaxNode> newChildren) {
         if (children == null) { children = new ArrayList<SyntaxNode>();}
@@ -106,15 +111,33 @@ public class SyntaxNode {
 
     public SyntaxNode(Token token) {
         this.type = NodeType.fromTokenType(token.getType());
+        lineNumber = token.lineNumber;
     }
 
     public SyntaxNode(Token token, String value) {
         this.type = NodeType.fromTokenType(token.getType());
+        lineNumber = token.lineNumber;
         this.value = value;
     }
 
     public NodeType getType() {
         return type;
+    }
+
+    public String getValueRecursive() {
+        if (value != null) {
+            return value;
+        } else {
+            return children.get(0).getValueRecursive();
+        }
+    }
+
+    public int getLineRecursive() {
+        if (lineNumber != -1) {
+            return lineNumber;
+        } else {
+            return children.get(0).getLineRecursive();
+        }
     }
 
     public String getValue() {

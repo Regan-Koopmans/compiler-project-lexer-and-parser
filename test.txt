@@ -10,3 +10,7 @@ proc hello {
 
 	output(hello)
 }
+
+proc another {
+	output(hi)
+}

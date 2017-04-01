@@ -543,7 +543,12 @@ public class Parser {
         } else if (size == 2) {
 
             if (testSymbols.get(0).getType() == PROC
-                    && testSymbols.get(0).getType() == PROC_DEFS) {
+                    && testSymbols.get(1).getType() == PROC_DEFS) {
+                return true;
+            }
+
+            if (testSymbols.get(0).getType() == PROC_DEFS
+                    && testSymbols.get(1).getType() == PROC_DEFS) {
                 return true;
             }
 

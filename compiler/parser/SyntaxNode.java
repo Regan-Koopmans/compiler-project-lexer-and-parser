@@ -56,7 +56,7 @@ import compiler.lexer.Token;
 //                ---------------              ----------
 
 public class SyntaxNode {
-    
+
     private NodeType type;
     private ArrayList<SyntaxNode> children = null;
     private String value;
@@ -75,15 +75,15 @@ public class SyntaxNode {
 
         if (children != null) {
             for (int i = 0; i < children.size() - 1; i++) {
-            children.get(i).print(prefix + (isTail ? "    " : "│   "), false);
+                children.get(i).print(prefix + (isTail ? "    " : "│   "), false);
             }
             if (children.size() > 0) {
                 children.get(children.size() - 1)
-                    .print(prefix + (isTail ?"    " : "│   "), true);
+                .print(prefix + (isTail ?"    " : "│   "), true);
             }
         }
 
-        
+
     }
 
     // A function that adds n children to a node
@@ -97,7 +97,9 @@ public class SyntaxNode {
     // }
 
     public void addChildren(ArrayList<SyntaxNode> newChildren) {
-        if (children == null) { children = new ArrayList<SyntaxNode>();}
+        if (children == null) {
+            children = new ArrayList<SyntaxNode>();
+        }
         for (SyntaxNode child:newChildren) {
             children.add(child);
         }

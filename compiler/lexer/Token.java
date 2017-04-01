@@ -28,11 +28,11 @@ public class Token {
 
     public String toString() {
 
-      String returnString = "TYPE: ";
-      returnString += type.toString() + "\nVALUE: ";
-      returnString += value;
-      returnString += "\nLINE: ";
-      returnString += lineNumber; 
-      return returnString;
+        String returnString = "TYPE: ";
+        returnString += type.toString() + "\nVALUE: ";
+        returnString += value;
+        returnString += "\nLINE: ";
+        returnString += lineNumber;
+        return returnString;
     }
 }

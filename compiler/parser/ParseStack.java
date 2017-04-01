@@ -10,112 +10,112 @@ import java.util.ArrayList;
 import java.lang.StringBuilder;
 
 public class ParseStack {
-	
-	// The stack is implemented as an ArrayList, but this
-	// is just a minor detail.
 
-	private ArrayList<SyntaxNode> data = new ArrayList<SyntaxNode>();
+    // The stack is implemented as an ArrayList, but this
+    // is just a minor detail.
 
-	// Adds an element to the top of the stack.
+    private ArrayList<SyntaxNode> data = new ArrayList<SyntaxNode>();
 
-	public void push(SyntaxNode input) {
-		data.add(0, input);
-	}
+    // Adds an element to the top of the stack.
 
-	// Returns the SyntaxNode at position `x` in
-	// the stack. Where index 0 is the top.
+    public void push(SyntaxNode input) {
+        data.add(0, input);
+    }
 
-	public SyntaxNode at(int x) {
-		return data.get(x);
-	}
+    // Returns the SyntaxNode at position `x` in
+    // the stack. Where index 0 is the top.
 
-	// The function `pop` removes and returns the top n items from
-	// the stack. The parameter `amount` tells the function how many
-	// to remove.
+    public SyntaxNode at(int x) {
+        return data.get(x);
+    }
 
-	// therefore if we have the stack:
+    // The function `pop` removes and returns the top n items from
+    // the stack. The parameter `amount` tells the function how many
+    // to remove.
 
-	//      -----------
-	//      |   5     |
-	//      -----------
-	//      |   6     |
-	//      -----------
-	//      |   7     |
-	//      -----------
+    // therefore if we have the stack:
 
-	// the function call pop(2) = [5,6]
-	// but the stack now looks like this:
+    //      -----------
+    //      |   5     |
+    //      -----------
+    //      |   6     |
+    //      -----------
+    //      |   7     |
+    //      -----------
 
-	// 
-	// 
-	// 
-	// 
-	//      -----------
-	//      |   7     |
-	//      -----------
+    // the function call pop(2) = [5,6]
+    // but the stack now looks like this:
 
-	// This pop method is very inportant to the 
-	// reduce method in parser. In usage, we would
-	// then create a new element using 5 and 6, and push this
-	// to the stack.
+    //
+    //
+    //
+    //
+    //      -----------
+    //      |   7     |
+    //      -----------
 
-	public ArrayList<SyntaxNode> pop(int amount) {
-		ArrayList<SyntaxNode> result = new ArrayList<SyntaxNode>();
-		for (int x = 0; x < amount; x++) {
-			result.add(data.get(0));
-			data.remove(0);
-		}
-		return result;
-	}
+    // This pop method is very inportant to the
+    // reduce method in parser. In usage, we would
+    // then create a new element using 5 and 6, and push this
+    // to the stack.
 
-	// The function `peek` returns the top n items from the stack but
-	// does not delete them from the stack. The parameter `amount`
-	// tells the function how many to return.
+    public ArrayList<SyntaxNode> pop(int amount) {
+        ArrayList<SyntaxNode> result = new ArrayList<SyntaxNode>();
+        for (int x = 0; x < amount; x++) {
+            result.add(data.get(0));
+            data.remove(0);
+        }
+        return result;
+    }
 
-	// therefore if we have a stack:
+    // The function `peek` returns the top n items from the stack but
+    // does not delete them from the stack. The parameter `amount`
+    // tells the function how many to return.
 
-	//      -----------
-	//      |   5     |
-	//      -----------
-	//      |   6     |
-	//		-----------
-	//      |   7     |
-	//      -----------
+    // therefore if we have a stack:
 
-	// the function call peek(2) = [5,6]
-	// and the stack itself remains the same.
+    //      -----------
+    //      |   5     |
+    //      -----------
+    //      |   6     |
+    //		-----------
+    //      |   7     |
+    //      -----------
 
-	//      -----------
-	//      |   5     |
-	//      -----------
-	//      |   6     |
-	//		-----------
-	//      |   7     |
-	//      -----------
+    // the function call peek(2) = [5,6]
+    // and the stack itself remains the same.
 
-	public ArrayList<SyntaxNode> peek(int amount) {
-		ArrayList<SyntaxNode> result = new ArrayList<SyntaxNode>();
-		for (int x = 0; x < amount; x++) {
-			result.add(data.get(x));
-		}
-		return result;
-	}
+    //      -----------
+    //      |   5     |
+    //      -----------
+    //      |   6     |
+    //		-----------
+    //      |   7     |
+    //      -----------
 
-	// This is a helper function used to print the stack
-	// out to the terminal.
+    public ArrayList<SyntaxNode> peek(int amount) {
+        ArrayList<SyntaxNode> result = new ArrayList<SyntaxNode>();
+        for (int x = 0; x < amount; x++) {
+            result.add(data.get(x));
+        }
+        return result;
+    }
 
-	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		for (SyntaxNode s : data) {
-			sb.append(s.getType() + "\n");
-		}
-		return sb.toString();
-	}
+    // This is a helper function used to print the stack
+    // out to the terminal.
 
-	// Helper function to return the size of the
-	// stack currently.
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        for (SyntaxNode s : data) {
+            sb.append(s.getType() + "\n");
+        }
+        return sb.toString();
+    }
 
-	public int size() {
-		return data.size();
-	}
+    // Helper function to return the size of the
+    // stack currently.
+
+    public int size() {
+        return data.size();
+    }
 }

@@ -13,30 +13,30 @@ import java.util.Collections;
 import static compiler.parser.NodeType.*;
 
 public class Parser {
-    
+
     private SyntaxTree tree = new SyntaxTree();
     private ParseStack stack = new ParseStack();
 
     public void parse(ArrayList<Token> tokens) {
 
-        // For every token in our list, shift this token 
+        // For every token in our list, shift this token
         // (that is:add it to the stack), and then try to reduce.
 
         // in reality, we might need to add more reduce calls,
         // but this was just to try prove the concept.
 
 
-        // 
+        //
         //                                place in        ------------
         //    TOKEN -> TOKEN -> TOKEN --------------->    |   stack  |
         //                                                 -----------
         //
-        //    for every token that we add to the stack, we try 
+        //    for every token that we add to the stack, we try
         //    to reduce the stack to a smaller stack with more
         //    high-level syntax nodes.
 
         //     -------------------------   |
-        //     | low-level syntax-node |   | reduce -> 
+        //     | low-level syntax-node |   | reduce ->
         //     |-----------------------|   |            -------------------------
         //     | low-level syntax-node |   V           | high-level syntax-node |
         //      ------------------------               --------------------------
@@ -52,7 +52,7 @@ public class Parser {
         // continue to reduce while reductions can be made.
 
         while (reduce()) {}
-    
+
 
         ArrayList<SyntaxNode> testSymbols = stack.peek(stack.size());
         Collections.reverse(testSymbols);
@@ -66,8 +66,8 @@ public class Parser {
 
         if (stack.size() != 1) {
             System.out.println("\n\u001B[31mSyntax error!\u001B[0m");
-            System.out.println("Unexpected input near \"" + stack.peek(1).get(0).getValueRecursive() + 
-                "\" on line " + stack.peek(1).get(0).getLineRecursive() + ".\n");
+            System.out.println("Unexpected input near \"" + stack.peek(1).get(0).getValueRecursive() +
+                               "\" on line " + stack.peek(1).get(0).getLineRecursive() + ".\n");
         } else {
             System.out.println("\n\u001B[32mParsing succeeded.\u001B[0m\n");
             System.out.println("Syntax tree generated : \n");
@@ -91,7 +91,7 @@ public class Parser {
     // This is the reduce function from the literature. At the moment it only
     // pops the top 3 to check if it can reduce to INSTR. In the final function,
     // the reduce method will have to do a lot more checking (for different stack
-    // portions of size x, and for different types of syntax nodes/production rules). 
+    // portions of size x, and for different types of syntax nodes/production rules).
 
     public boolean reduce() {
         boolean reduceMade = false;
@@ -106,13 +106,13 @@ public class Parser {
 
             testSymbols = stack.peek(size-x);
             Collections.reverse(testSymbols);
-        
+
             if (reduceVAR(testSymbols)) {
                 stack.pop(size-x);
                 reducedNode = new SyntaxNode(VAR);
                 reducedNode.addChildren(testSymbols);
                 stack.push(reducedNode);
-		reduce();
+                reduce();
                 return true;
             }
 
@@ -129,7 +129,7 @@ public class Parser {
                 reducedNode = new SyntaxNode(INSTR);
                 reducedNode.addChildren(testSymbols);
                 stack.push(reducedNode);
-		reduce();
+                reduce();
                 return true;
             }
 
@@ -138,7 +138,7 @@ public class Parser {
                 reducedNode = new SyntaxNode(IOCALL);
                 reducedNode.addChildren(testSymbols);
                 stack.push(reducedNode);
-		reduce();
+                reduce();
                 return true;
             }
 
@@ -147,7 +147,7 @@ public class Parser {
                 reducedNode = new SyntaxNode(ASSIGN);
                 reducedNode.addChildren(testSymbols);
                 stack.push(reducedNode);
-		reduce();
+                reduce();
                 return true;
             }
 
@@ -156,7 +156,7 @@ public class Parser {
                 reducedNode = new SyntaxNode(CALC);
                 reducedNode.addChildren(testSymbols);
                 stack.push(reducedNode);
-		reduce();
+                reduce();
                 return true;
             }
 
@@ -165,7 +165,7 @@ public class Parser {
                 reducedNode = new SyntaxNode(BOOL);
                 reducedNode.addChildren(testSymbols);
                 stack.push(reducedNode);
-		reduce();
+                reduce();
                 return true;
             }
 
@@ -174,7 +174,7 @@ public class Parser {
                 reducedNode = new SyntaxNode(NUMEXPR);
                 reducedNode.addChildren(testSymbols);
                 stack.push(reducedNode);
-		reduce();
+                reduce();
                 return true;
             }
 
@@ -183,39 +183,38 @@ public class Parser {
                 reducedNode = new SyntaxNode(COND_BRANCH);
                 reducedNode.addChildren(testSymbols);
                 stack.push(reducedNode);
-		reduce();
+                reduce();
                 return true;
             }
-            
+
             if (reduceCOND_LOOP(testSymbols)) {
                 stack.pop(size-x);
                 reducedNode = new SyntaxNode(COND_LOOP);
                 reducedNode.addChildren(testSymbols);
                 stack.push(reducedNode);
-		reduce();
+                reduce();
                 return true;
             }
 
-	    if (reduceCALL(testSymbols)) {
-	    	stack.pop(size-x);
-		reducedNode = new SyntaxNode(CALL);
-		reducedNode.addChildren(testSymbols);
-		stack.push(reducedNode);
-		reduce();
-		return true;
+            if (reduceCALL(testSymbols)) {
+                stack.pop(size-x);
+                reducedNode = new SyntaxNode(CALL);
+                reducedNode.addChildren(testSymbols);
+                stack.push(reducedNode);
+                reduce();
+                return true;
 
-	    }
+            }
 
             if (reducePROC(testSymbols)) {
                 stack.pop(size-x);
                 reducedNode = new SyntaxNode(PROC);
                 reducedNode.addChildren(testSymbols);
                 stack.push(reducedNode);
-		reduce();
+                reduce();
                 return true;
             }
 
-<<<<<<< HEAD
             if (reduceCALL(testSymbols)) {
                 stack.pop(size-x);
                 reducedNode = new SyntaxNode(CALL);
@@ -225,8 +224,8 @@ public class Parser {
                 return true;
             }
 
-            if (x > 1){
-                    if (reducePROG(testSymbols)) {
+            if (x > 1) {
+                if (reducePROG(testSymbols)) {
                     stack.pop(size-x);
                     reducedNode = new SyntaxNode(PROG);
                     reducedNode.addChildren(testSymbols);
@@ -235,29 +234,19 @@ public class Parser {
                     return true;
                 }
             }
-            
 
-=======
-	    if (reducePROC_DEFS(testSymbols)) {
-	    	stack.pop(size-x);
-		reducedNode = new SyntaxNode(PROC_DEFS);
-		reducedNode.addChildren(testSymbols);
-		stack.push(reducedNode);
-		reduce();
-		return true;
-	    }
-	    
-	    if (reducePROG(testSymbols)) {
- 		stack.pop(size-x);
-		reducedNode = new SyntaxNode(PROG);
-		reducedNode.addChildren(testSymbols);
-		stack.push(reducedNode);
-		reduce();
-		return true;
- 	    }
->>>>>>> 69c34e4c1411982bfd0b77949688af7fa12a612e
+
+            if (reducePROC_DEFS(testSymbols)) {
+                stack.pop(size-x);
+                reducedNode = new SyntaxNode(PROC_DEFS);
+                reducedNode.addChildren(testSymbols);
+                stack.push(reducedNode);
+                reduce();
+                return true;
+            }
+
         }
-        
+
         return reduceMade;
     }
 
@@ -265,17 +254,17 @@ public class Parser {
 
         if (testSymbols.size() == 1) {
             SyntaxNode test = testSymbols.get(0);
-            if (   test.getType() == Halt 
-                || test.getType() == IOCALL
-                || test.getType() == CALL
-                || test.getType() == ASSIGN
-		|| test.getType() == CALL
-                || test.getType() == COND_BRANCH
-                || test.getType() == COND_LOOP) {
+            if (   test.getType() == Halt
+                    || test.getType() == IOCALL
+                    || test.getType() == CALL
+                    || test.getType() == ASSIGN
+                    || test.getType() == CALL
+                    || test.getType() == COND_BRANCH
+                    || test.getType() == COND_LOOP) {
                 return true;
             }
         }
-        
+
         return false;
     }
 
@@ -292,26 +281,26 @@ public class Parser {
             // if IO statement
 
             if  (testSymbols.get(0).getType() == IO) {
-                
+
 
                 // if enclosed in brackets
 
                 if (testSymbols.get(1).getValue().equals("(") && testSymbols.get(3).getValue().equals(")")) {
-                    
+
                     // if variable
 
                     if (testSymbols.get(2).getType() == VAR) {
                         return true;
                     }
-                } 
+                }
             }
-        } 
+        }
         return false;
     }
 
     public boolean reduceVAR(ArrayList<SyntaxNode> testSymbols) {
-        if (testSymbols.size() == 1 && 
-            testSymbols.get(0).getType() == UserDefinedName) {
+        if (testSymbols.size() == 1 &&
+                testSymbols.get(0).getType() == UserDefinedName) {
             return true;
         }
         return false;
@@ -319,37 +308,37 @@ public class Parser {
 
     public boolean reduceCODE(ArrayList<SyntaxNode> testSymbols) {
         int size = testSymbols.size();
-        
+
         if (size == 1) {
-        
+
             // CODE -> INSTR
 
             if (testSymbols.get(0).getType() == INSTR) {
                 return true;
             }
         } else if (size == 3) {
-            
+
             // CODE -> INSTR; CODE
 
             // System.out.println("Here!");
 
-            if (testSymbols.get(0).getType() == INSTR && 
-                testSymbols.get(1).getValue().equals(";") && 
-                testSymbols.get(2).getType() == CODE) {
-                return true;
-            
-            // this is not exactly "correct" to the grammar, but it
-            // emulates correct behaviour
-
-            // CODE -> CODE; CODE
-
-            } else if (testSymbols.get(0).getType() == CODE && 
-                testSymbols.get(1).getValue().equals(";") && 
-                testSymbols.get(2).getType() == CODE) {
+            if (testSymbols.get(0).getType() == INSTR &&
+                    testSymbols.get(1).getValue().equals(";") &&
+                    testSymbols.get(2).getType() == CODE) {
                 return true;
 
+                // this is not exactly "correct" to the grammar, but it
+                // emulates correct behaviour
 
-            } 
+                // CODE -> CODE; CODE
+
+            } else if (testSymbols.get(0).getType() == CODE &&
+                       testSymbols.get(1).getValue().equals(";") &&
+                       testSymbols.get(2).getType() == CODE) {
+                return true;
+
+
+            }
         }
         return false;
     }
@@ -361,39 +350,39 @@ public class Parser {
 
                 if (size == 5) {
 
-                    if (testSymbols.get(0).getValue().equals("(") 
-                        && testSymbols.get(1).getType() == VAR
-                        && testSymbols.get(2).getType() == Comparison
-                        && testSymbols.get(3).getType() == VAR
-                        && testSymbols.get(4).getValue().equals(")")) {
+                    if (testSymbols.get(0).getValue().equals("(")
+                            && testSymbols.get(1).getType() == VAR
+                            && testSymbols.get(2).getType() == Comparison
+                            && testSymbols.get(3).getType() == VAR
+                            && testSymbols.get(4).getValue().equals(")")) {
                         return true;
                     }
 
 
                 } else if (size == 6) {
-                    if (testSymbols.get(0).getType() == BooleanOp 
-                        && testSymbols.get(1).getValue().equals("(")
-                        && testSymbols.get(2).getType() == BOOL
-                        && testSymbols.get(3).getValue().equals(",")
-                        && testSymbols.get(4).getType() == BOOL
-                        && testSymbols.get(5).getValue().equals(")")) {
+                    if (testSymbols.get(0).getType() == BooleanOp
+                            && testSymbols.get(1).getValue().equals("(")
+                            && testSymbols.get(2).getType() == BOOL
+                            && testSymbols.get(3).getValue().equals(",")
+                            && testSymbols.get(4).getType() == BOOL
+                            && testSymbols.get(5).getValue().equals(")")) {
                         return true;
                     }
 
-                    if (testSymbols.get(0).getValue().equals("eq") 
-                        && testSymbols.get(1).getValue().equals("(")
-                        && testSymbols.get(2).getType() == VAR
-                        && testSymbols.get(3).getValue().equals(",")
-                        && testSymbols.get(4).getType() == VAR
-                        && testSymbols.get(5).getValue().equals(")")) {
+                    if (testSymbols.get(0).getValue().equals("eq")
+                            && testSymbols.get(1).getValue().equals("(")
+                            && testSymbols.get(2).getType() == VAR
+                            && testSymbols.get(3).getValue().equals(",")
+                            && testSymbols.get(4).getType() == VAR
+                            && testSymbols.get(5).getValue().equals(")")) {
                         return true;
                     }
                 }
 
             } else {
 
-                if (testSymbols.get(0).getValue().equals("not") 
-                    && testSymbols.get(1).getType() == BOOL) {
+                if (testSymbols.get(0).getValue().equals("not")
+                        && testSymbols.get(1).getType() == BOOL) {
                     return true;
                 }
             }
@@ -404,13 +393,13 @@ public class Parser {
     public boolean reduceCALC(ArrayList<SyntaxNode> testSymbols) {
         if (testSymbols.size() == 6) {
 
-            if (testSymbols.get(0).getType() == NumberOp 
-                && testSymbols.get(1).getValue().equals("(")
-                && testSymbols.get(2).getType() == NUMEXPR
-                && testSymbols.get(3).getValue().equals(",")
-                && testSymbols.get(4).getType() == NUMEXPR
-                && testSymbols.get(5).getValue().equals(")")) {
-                    return true;
+            if (testSymbols.get(0).getType() == NumberOp
+                    && testSymbols.get(1).getValue().equals("(")
+                    && testSymbols.get(2).getType() == NUMEXPR
+                    && testSymbols.get(3).getValue().equals(",")
+                    && testSymbols.get(4).getType() == NUMEXPR
+                    && testSymbols.get(5).getValue().equals(")")) {
+                return true;
             }
         }
         return false;
@@ -418,13 +407,8 @@ public class Parser {
 
     public boolean reduceNUMEXPR(ArrayList<SyntaxNode> testSymbols) {
         if (testSymbols.size() == 1) {
-            if (testSymbols.get(0).getType() == Integer 
-                || testSymbols.get(0).getType() == CALC) {
-<<<<<<< HEAD
-                    if (testSymbols.get(0).getType() == Integer) {
-                    }
-=======
->>>>>>> 69c34e4c1411982bfd0b77949688af7fa12a612e
+            if (testSymbols.get(0).getType() == Integer
+                    || testSymbols.get(0).getType() == CALC) {
                 return true;
             }
         }
@@ -436,45 +420,27 @@ public class Parser {
         if (size == 1) {
             if (testSymbols.get(0).getType() == CODE) {
                 return true;
-<<<<<<< HEAD
+            } else if (size == 3) {
+                if (testSymbols.get(0).getType() == CODE
+                        && testSymbols.get(1).getValue().equals(";")
+                        && testSymbols.get(2).getType() == PROC_DEFS) {
+                    return true;
+                }
+                if (testSymbols.get(0).getType() == PROG
+                        && testSymbols.get(1).getValue().equals(";")
+                        && testSymbols.get(2).getType() == PROC_DEFS) {
+                    return true;
+                }
             }
-        } else if (size == 2) {
-
-            if (testSymbols.get(0).getType() == CODE
-                && testSymbols.get(1).getValue().equals(";")) {
-
-                return true;
-            } 
-
-            if (testSymbols.get(0).getType() == CODE
-                && testSymbols.get(1).getType() == CODE) {
-
-                return true;
-            } 
-
-=======
-            } 
->>>>>>> 69c34e4c1411982bfd0b77949688af7fa12a612e
-        } else if (size == 3) {
-            if (testSymbols.get(0).getType() == CODE
-                && testSymbols.get(1).getValue().equals(";")
-                && testSymbols.get(2).getType() == PROC_DEFS) {
-                return true;
-            }
-	    if (testSymbols.get(0).getType() == PROG
-		&& testSymbols.get(1).getValue().equals(";")
-		&& testSymbols.get(2).getType() == PROC_DEFS) {
-  	    	return true;
-	    }
-        } 
+        }
         return false;
     }
 
     public boolean reduceASSIGN(ArrayList<SyntaxNode> testSymbols) {
         if (testSymbols.size() == 3) {
-            if (testSymbols.get(0).getType() == VAR 
-                && testSymbols.get(1).getType() == Assignment
-                && (testSymbols.get(2).getType() == VAR || testSymbols.get(2).getType() == NUMEXPR || testSymbols.get(2).getType() == ShortString)) {
+            if (testSymbols.get(0).getType() == VAR
+                    && testSymbols.get(1).getType() == Assignment
+                    && (testSymbols.get(2).getType() == VAR || testSymbols.get(2).getType() == NUMEXPR || testSymbols.get(2).getType() == ShortString)) {
                 return true;
             }
         }
@@ -484,24 +450,24 @@ public class Parser {
     public boolean reduceCOND_LOOP(ArrayList<SyntaxNode> testSymbols) {
         int size = testSymbols.size();
         if (size == 7) {
-            if (testSymbols.get(0).getValue().equals("while") 
-                && testSymbols.get(1).getValue().equals("(")
-                && testSymbols.get(2).getType() == BOOL
-                && testSymbols.get(3).getValue().equals(")")
-                && testSymbols.get(4).getValue().equals("{")
-                && testSymbols.get(5).getType() == CODE
-                && testSymbols.get(6).getValue().equals("}")) {
-                    return true;
+            if (testSymbols.get(0).getValue().equals("while")
+                    && testSymbols.get(1).getValue().equals("(")
+                    && testSymbols.get(2).getType() == BOOL
+                    && testSymbols.get(3).getValue().equals(")")
+                    && testSymbols.get(4).getValue().equals("{")
+                    && testSymbols.get(5).getType() == CODE
+                    && testSymbols.get(6).getValue().equals("}")) {
+                return true;
             }
         } else if (size == 22) {
-            if (testSymbols.get(0).getValue().equals("for") 
-               && testSymbols.get(1).getValue().equals("(")
-                && testSymbols.get(2).getType() == BOOL
-                && testSymbols.get(3).getValue().equals(")")
-                && testSymbols.get(4).getValue().equals("{")
-                && testSymbols.get(5).getType() == CODE
-                && testSymbols.get(6).getValue().equals("}")) {
-                    return true;
+            if (testSymbols.get(0).getValue().equals("for")
+                    && testSymbols.get(1).getValue().equals("(")
+                    && testSymbols.get(2).getType() == BOOL
+                    && testSymbols.get(3).getValue().equals(")")
+                    && testSymbols.get(4).getValue().equals("{")
+                    && testSymbols.get(5).getType() == CODE
+                    && testSymbols.get(6).getValue().equals("}")) {
+                return true;
             }
         }
         return false;
@@ -509,48 +475,36 @@ public class Parser {
 
     public boolean reduceCOND_BRANCH(ArrayList<SyntaxNode> testSymbols) {
         int size = testSymbols.size();
-<<<<<<< HEAD
         if (size == 9) {
-=======
-        if (size == 8) {
->>>>>>> 69c34e4c1411982bfd0b77949688af7fa12a612e
 
-            if (testSymbols.get(0).getValue().equals("if") 
-                && testSymbols.get(1).getValue().equals("(")
-                && testSymbols.get(2).getType() == BOOL
-                && testSymbols.get(3).getValue().equals(")")
-                && testSymbols.get(4).getValue().equals("then")
-                && testSymbols.get(5).getValue().equals("{")
-                && (testSymbols.get(6).getType() == CODE || testSymbols.get(6).getType() == PROG)
-                && testSymbols.get(7).getValue().equals("}")
-                && testSymbols.get(8).getValue().equals(";")) {
-                    return true;
+            if (testSymbols.get(0).getValue().equals("if")
+                    && testSymbols.get(1).getValue().equals("(")
+                    && testSymbols.get(2).getType() == BOOL
+                    && testSymbols.get(3).getValue().equals(")")
+                    && testSymbols.get(4).getValue().equals("then")
+                    && testSymbols.get(5).getValue().equals("{")
+                    && (testSymbols.get(6).getType() == CODE || testSymbols.get(6).getType() == PROG)
+                    && testSymbols.get(7).getValue().equals("}")
+                    && testSymbols.get(8).getValue().equals(";")) {
+                return true;
             }
 
-<<<<<<< HEAD
+
         } else if (size == 13) {
-            if (testSymbols.get(0).getValue().equals("if") 
-                && testSymbols.get(1).getValue().equals("(")
-                && testSymbols.get(2).getType() == BOOL
-                && testSymbols.get(3).getValue().equals(")")
-                && testSymbols.get(4).getValue().equals("then")
-                && testSymbols.get(5).getValue().equals("{")
-                && (testSymbols.get(6).getType() == CODE || testSymbols.get(6).getType() == PROG)
-                && testSymbols.get(7).getValue().equals("}")
-                && testSymbols.get(8).getValue().equals("else")
-                && testSymbols.get(9).getValue().equals("{")
-                && (testSymbols.get(10).getType() == CODE || testSymbols.get(10).getType() == PROG)
-                && testSymbols.get(11).getValue().equals("}")
-                && testSymbols.get(12).getValue().equals(";")) {
-=======
-        } else if (size == 5) {
-            if (testSymbols.get(0).getType() == COND_BRANCH
-                && testSymbols.get(1).getValue().equals("else")
-                && testSymbols.get(2).getValue().equals("{")
-                && (testSymbols.get(3).getType() == CODE || testSymbols.get(3).getType() == PROG)
-                && testSymbols.get(4).getValue().equals("}")) {
->>>>>>> 69c34e4c1411982bfd0b77949688af7fa12a612e
-                    return true;
+            if (testSymbols.get(0).getValue().equals("if")
+                    && testSymbols.get(1).getValue().equals("(")
+                    && testSymbols.get(2).getType() == BOOL
+                    && testSymbols.get(3).getValue().equals(")")
+                    && testSymbols.get(4).getValue().equals("then")
+                    && testSymbols.get(5).getValue().equals("{")
+                    && (testSymbols.get(6).getType() == CODE || testSymbols.get(6).getType() == PROG)
+                    && testSymbols.get(7).getValue().equals("}")
+                    && testSymbols.get(8).getValue().equals("else")
+                    && testSymbols.get(9).getValue().equals("{")
+                    && (testSymbols.get(10).getType() == CODE || testSymbols.get(10).getType() == PROG)
+                    && testSymbols.get(11).getValue().equals("}")
+                    && testSymbols.get(12).getValue().equals(";")) {
+                return true;
             }
         }
         return false;
@@ -559,61 +513,50 @@ public class Parser {
 
 
     public boolean reducePROC_DEFS(ArrayList<SyntaxNode> testSymbols) {
-	int size = testSymbols.size();
+        int size = testSymbols.size();
 
-	if (size == 1) {
-	  if (testSymbols.get(0).getType() == PROC) {
-	  	return true;
-	  }
-	  
-	} else if (size == 2) {
-		
-	  if (testSymbols.get(0).getType() == PROC 
-	      && testSymbols.get(0).getType() == PROC_DEFS) {	
-		return true;	  
- 	  } 
+        if (size == 1) {
+            if (testSymbols.get(0).getType() == PROC) {
+                return true;
+            }
 
-	}
-	return false;
+        } else if (size == 2) {
+
+            if (testSymbols.get(0).getType() == PROC
+                    && testSymbols.get(0).getType() == PROC_DEFS) {
+                return true;
+            }
+
+        }
+        return false;
     }
 
 
     public boolean reducePROC(ArrayList<SyntaxNode> testSymbols) {
         if (testSymbols.size() == 5) {
             if (testSymbols.get(0).getType() == Procedure
-            && testSymbols.get(1).getType() == VAR
-	    && testSymbols.get(2).getValue().equals("{")
-            && testSymbols.get(3).getType() == PROG
-            && testSymbols.get(4).getValue().equals("}")) {
-                return true;
-            }
-        }        
-        return false;
-    }
-
-<<<<<<< HEAD
-    public boolean reduceCALL(ArrayList<SyntaxNode> testSymbols) {
-        if (testSymbols.size() == 2) {
-            if (testSymbols.get(0).getType() == VAR
-                && testSymbols.get(1).getValue().equals(";")) {
+                    && testSymbols.get(1).getType() == VAR
+                    && testSymbols.get(2).getValue().equals("{")
+                    && testSymbols.get(3).getType() == PROG
+                    && testSymbols.get(4).getValue().equals("}")) {
                 return true;
             }
         }
         return false;
-=======
-
-    public boolean reduceCALL(ArrayList<SyntaxNode> testSymbols) {
-   	if (testSymbols.size() == 2) {
-	   if (testSymbols.get(0).getType() == VAR
-	       && testSymbols.get(1).getValue().equals(";")) { 
-	     return true;
- 	   }	
-	}  
-	return false;
->>>>>>> 69c34e4c1411982bfd0b77949688af7fa12a612e
     }
 
-    // Function to return a syntax tree. 
+
+    public boolean reduceCALL(ArrayList<SyntaxNode> testSymbols) {
+        if (testSymbols.size() == 2) {
+            if (testSymbols.get(0).getType() == VAR
+                    && testSymbols.get(1).getValue().equals(";")) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // Function to return a syntax tree.
 
     // Note: I have not written any code to convert the compressed stack into a tree
     // so the tree is always NULL at this point.
@@ -622,5 +565,7 @@ public class Parser {
         return;
     }
 
-    public SyntaxTree getTree() { return tree; }
+    public SyntaxTree getTree() {
+        return tree;
+    }
 }

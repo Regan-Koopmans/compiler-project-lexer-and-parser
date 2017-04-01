@@ -16,51 +16,46 @@ import java.lang.StringBuilder;
 
 class Main {
 
-  // Helper method to neaten error messages
+    // Helper method to neaten error messages
 
-  public static void fatalError(String message) {
-    System.out.println(message);
-    System.exit(1);
-  }
-
-  public static void main(String[] args) {
-
-    if (args.length == 0) {
-      fatalError("You did not pass an input file.");
+    public static void fatalError(String message) {
+        System.out.println(message);
+        System.exit(1);
     }
 
-    // Create an instance of the Lexer class.
-    Lexer lex = new Lexer();
+    public static void main(String[] args) {
 
-    // Create an instance of the Parser class
-    Parser parser = new Parser();
+        if (args.length == 0) {
+            fatalError("You did not pass an input file.");
+        }
 
-    // Create String from file.
-    StringBuilder sb = new StringBuilder();
-    File inputFile = new File(args[0]);
+        // Create an instance of the Lexer class.
+        Lexer lex = new Lexer();
 
-    try {
-      FileReader fileReader = new FileReader(inputFile);
-      BufferedReader reader = new BufferedReader(fileReader);
-      String line;
-      int lineNumber = 1;
+        // Create an instance of the Parser class
+        Parser parser = new Parser();
 
-      while ((line = reader.readLine()) != null) {
-        lex.scan(line, lineNumber);
-        lineNumber++;
-      }
-      fileReader.close();
+        // Create String from file.
+        StringBuilder sb = new StringBuilder();
+        File inputFile = new File(args[0]);
 
-    } catch (Exception e) { fatalError("There was a problem reading the file"); }
+        try {
+            FileReader fileReader = new FileReader(inputFile);
+            BufferedReader reader = new BufferedReader(fileReader);
+            String line;
+            int lineNumber = 1;
 
-     for (Token token:lex.getTokens()) {
-      System.out.println(token);
-      System.out.println("");
+            while ((line = reader.readLine()) != null) {
+                lex.scan(line, lineNumber);
+                lineNumber++;
+            }
+            fileReader.close();
+
+        } catch (Exception e) {
+            fatalError("There was a problem reading the file");
+        }
+
+        // Invoke the parser, passing the list of tokens
+        parser.parse(lex.getTokens());
     }
-
-    System.out.println("-----------------------------------");
-
-    // Invoke the parser, passing the list of tokens
-    parser.parse(lex.getTokens());
-  }
 }

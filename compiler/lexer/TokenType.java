@@ -8,27 +8,27 @@ package compiler.lexer;
 
 public enum TokenType {
 
-  Comparison         ("Comparison"),
-  BooleanOp          ("Boolean Operator"),
-  NumberOp           ("Number Operator"),
-  String             ("String"),
-  Assignment         ("Assignment"),
-  Control            ("Control"),
-  IO                 ("IO"),
-  Integer            ("Integer"),
-  Halt               ("Halt"),
-  UserDefinedName    ("User Defined Name"),
-  Procedure          ("Procedure"),
-  Grouping           ("Grouping"),
-  ShortString        ("Short String");
+    Comparison         ("Comparison"),
+    BooleanOp          ("Boolean Operator"),
+    NumberOp           ("Number Operator"),
+    String             ("String"),
+    Assignment         ("Assignment"),
+    Control            ("Control"),
+    IO                 ("IO"),
+    Integer            ("Integer"),
+    Halt               ("Halt"),
+    UserDefinedName    ("User Defined Name"),
+    Procedure          ("Procedure"),
+    Grouping           ("Grouping"),
+    ShortString        ("Short String");
 
-  public final String name;
+    public final String name;
 
-  private TokenType(String name) {
-    this.name = name;
-  }
+    private TokenType(String name) {
+        this.name = name;
+    }
 
-  public String toString() {
-    return name;
-  }
+    public String toString() {
+        return name;
+    }
 }

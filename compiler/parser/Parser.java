@@ -53,22 +53,25 @@ public class Parser {
 
         while (reduce()) {}
 
+        ArrayList<SyntaxNode> testSymbols;
 
-        ArrayList<SyntaxNode> testSymbols = stack.peek(stack.size());
-        Collections.reverse(testSymbols);
-
-        if (reducePROG(testSymbols)) {
-            stack.pop(stack.size());
-            SyntaxNode reducedNode = new SyntaxNode(PROG);
-            reducedNode.addChildren(testSymbols);
-            stack.push(reducedNode);
+        int size = stack.size();
+        for (int x = 0; x < size; x++) {
+            testSymbols = stack.peek(size-x);
+            Collections.reverse(testSymbols);
+            if (reducePROG(testSymbols)) {
+                stack.pop(size-x);
+                SyntaxNode reducedNode = new SyntaxNode(PROG);
+                reducedNode.addChildren(testSymbols);
+                stack.push(reducedNode);
+            }
         }
 
-        if (stack.size() != 1) {
+        if (stack.size() != 1 || stack.peek(1).get(0).getType() != PROG) {
             System.out.println("\n\u001B[31mSyntax error!\u001B[0m");
             System.out.println("Unexpected input near \"" + stack.peek(1).get(0).getValueRecursive() +
                                "\" on line " + stack.peek(1).get(0).getLineRecursive() + ".\n");
-            // System.out.println(stack);
+            System.out.println(stack);
         } else {
             System.out.println("\n\u001B[32mParsing succeeded.\u001B[0m\n");
             System.out.println("Syntax tree generated : \n");
@@ -396,9 +399,9 @@ public class Parser {
 
             if (testSymbols.get(0).getType() == NumberOp
                     && testSymbols.get(1).getValue().equals("(")
-                    && testSymbols.get(2).getType() == NUMEXPR
+                    && (testSymbols.get(2).getType() == NUMEXPR || testSymbols.get(2).getType() == VAR)
                     && testSymbols.get(3).getValue().equals(",")
-                    && testSymbols.get(4).getType() == NUMEXPR
+                    && (testSymbols.get(4).getType() == NUMEXPR || testSymbols.get(2).getType() == VAR)
                     && testSymbols.get(5).getValue().equals(")")) {
                 return true;
             }
@@ -421,7 +424,15 @@ public class Parser {
         if (size == 1) {
             if (testSymbols.get(0).getType() == CODE) {
                 return true;
-            } else if (size == 3) {
+            }
+        } else if (size == 2) {
+
+
+                if (testSymbols.get(0).getType() == CODE
+                        && testSymbols.get(1).getType() == PROC_DEFS) {
+                    return true;
+                }
+        } else if (size == 3) {
                 if (testSymbols.get(0).getType() == CODE
                         && testSymbols.get(1).getValue().equals(";")
                         && testSymbols.get(2).getType() == PROC_DEFS) {
@@ -433,9 +444,8 @@ public class Parser {
                     return true;
                 }
             }
-        }
         return false;
-    }
+        }
 
     public boolean reduceASSIGN(ArrayList<SyntaxNode> testSymbols) {
         if (testSymbols.size() == 3) {

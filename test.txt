@@ -1,11 +1,1 @@
-
-
-var1 = 2;
-var2 = 3;
-
-var3 = "hello";
-
-if ((var1 < var2)) 
-then {
-	output(var3) 
-}
+hi="jane";

@@ -46,14 +46,17 @@ public class Lexer {
             currentWord += c;
             currentWord = currentWord.replaceAll("^\\s","");
 
+            System.out.println(currentWord);
+
+
             // This block deals with recognising strings. This means strings implicitly
             // take preference over all other tokens (which makes sense since any text
             // should be allowed in  a string.
 
-            if (c == '"') {
+            if (c == '"' && currentWord.charAt(0) == '"') {
                 if (parsingString) {
                     parsingString = false;
-                    if (currentWord.matches("\"(\\w|\\s){0,8}\""))
+                    if (currentWord.matches("\"(\\w|\\s|\\d){0,8}\""))
                     {
                         addToken(new Token(TokenType.ShortString, currentWord, count));
                     } else {
@@ -89,6 +92,7 @@ public class Lexer {
 
                 if (matchAssignment(currentWord)) {
                     longestToken = new Token(TokenType.Assignment, currentWord, lineNumber);
+
                     matchesAnyPattern = true;
                 }
 
@@ -119,13 +123,13 @@ public class Lexer {
 
                 if (matchGrouping(currentWord)) {
                     longestToken = new Token(TokenType.Grouping, currentWord, lineNumber);
+                    System.out.println("Matched grouping");
                     matchesAnyPattern = true;
                 }
 
                 if (!matchesAnyPattern && longestToken != null && !parsingString) {
                     addToken(longestToken);
                     count--;
-                } else if (longestToken ==  null && !parsingString) {
                 }
             }
         }

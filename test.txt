@@ -2,4 +2,11 @@ halt;
 
 while ((a < b)) {
 	output(hi)
+};
+
+hello ;
+
+proc hello {
+
+	output(hello)
 }

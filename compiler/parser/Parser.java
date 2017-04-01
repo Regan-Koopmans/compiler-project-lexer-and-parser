@@ -44,8 +44,10 @@ public class Parser {
 
         for (Token t : tokens) {
             shift(t);
+            System.out.println(stack);
             while (reduce()) {
             }
+            System.out.println(stack);
         }
 
 
@@ -53,10 +55,13 @@ public class Parser {
 
         while (reduce()) {}
 
-        ArrayList<SyntaxNode> testSymbols;
+        System.out.println(stack);
 
+        ArrayList<SyntaxNode> testSymbols;
         int size = stack.size();
+        System.out.println("SIZE : " + size);
         for (int x = 0; x < size; x++) {
+            size = stack.size();
             testSymbols = stack.peek(size-x);
             Collections.reverse(testSymbols);
             if (reducePROG(testSymbols)) {
@@ -65,6 +70,7 @@ public class Parser {
                 reducedNode.addChildren(testSymbols);
                 stack.push(reducedNode);
             }
+
         }
 
         if (stack.size() != 1 || stack.peek(1).get(0).getType() != PROG) {
@@ -433,16 +439,19 @@ public class Parser {
                     return true;
                 }
         } else if (size == 3) {
+
                 if (testSymbols.get(0).getType() == CODE
                         && testSymbols.get(1).getValue().equals(";")
                         && testSymbols.get(2).getType() == PROC_DEFS) {
                     return true;
                 }
+
                 if (testSymbols.get(0).getType() == PROG
                         && testSymbols.get(1).getValue().equals(";")
                         && testSymbols.get(2).getType() == PROC_DEFS) {
                     return true;
                 }
+
             }
         return false;
         }

@@ -68,6 +68,7 @@ public class Parser {
             System.out.println("\n\u001B[31mSyntax error!\u001B[0m");
             System.out.println("Unexpected input near \"" + stack.peek(1).get(0).getValueRecursive() +
                                "\" on line " + stack.peek(1).get(0).getLineRecursive() + ".\n");
+            // System.out.println(stack);
         } else {
             System.out.println("\n\u001B[32mParsing succeeded.\u001B[0m\n");
             System.out.println("Syntax tree generated : \n");
@@ -78,7 +79,7 @@ public class Parser {
         // I am just printing the stack here to see if anything
         // happened to the stack.
         // System.out.println("-----------");
-        // System.out.println(stack);
+        
     }
 
     // This is the function shift from SLR parsing with a stack

@@ -1,3 +1,5 @@
+halt;
+
 while ((a < b)) {
 	output(hi)
 }

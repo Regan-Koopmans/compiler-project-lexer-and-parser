@@ -45,21 +45,16 @@ public class Parser {
         for (Token t : tokens) {
             shift(t);
             System.out.println(stack);
-            while (reduce()) {
-            }
+            while (reduce()) {}
             System.out.println(stack);
         }
 
-
         // continue to reduce while reductions can be made.
-
         while (reduce()) {}
-
         System.out.println(stack);
 
         ArrayList<SyntaxNode> testSymbols;
         int size = stack.size();
-        System.out.println("SIZE : " + size);
         for (int x = 0; x < size; x++) {
             size = stack.size();
             testSymbols = stack.peek(size-x);
@@ -326,7 +321,12 @@ public class Parser {
             if (testSymbols.get(0).getType() == INSTR) {
                 return true;
             }
-        } else if (size == 3) {
+        } else if (size == 2) {
+            if (testSymbols.get(0).getType() == CODE
+                && testSymbols.get(1).getType() == CODE) {
+                return true;
+            }
+        }else if (size == 3) {
 
             // CODE -> INSTR; CODE
 
@@ -432,12 +432,16 @@ public class Parser {
                 return true;
             }
         } else if (size == 2) {
-
-
                 if (testSymbols.get(0).getType() == CODE
                         && testSymbols.get(1).getType() == PROC_DEFS) {
                     return true;
                 }
+
+                if (testSymbols.get(0).getType() == CODE
+                        && testSymbols.get(1).getValue().equals(";")) {
+                    return true;
+                }
+
         } else if (size == 3) {
 
                 if (testSymbols.get(0).getType() == CODE

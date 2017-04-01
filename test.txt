@@ -1,16 +1,22 @@
-halt;
 
-while ((a < b)) {
-	output(hi)
-};
+input(x) ;
 
-hello ;
+num = x ;
 
-proc hello {
+res = "unknown";
 
-	output(hello)
-}
+str = "even" ;
 
-proc another {
-	output(hi)
+checknumber ;
+
+if ( eq (res, str) ) 
+then { output(hi) }
+else { output(hello) };
+
+halt ;
+
+while ( (a < a ) ) 
+{ 
+	output(hi) 
+
 }

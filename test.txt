@@ -1,3 +1,14 @@
+<<<<<<< HEAD
 
 var1 = 2;
 var2 = 3;
+=======
+var1 = 2;
+var2 = "hello";
+
+if (()) then {
+  output(hi);
+  input(hi)
+}
+
+>>>>>>> 69c34e4c1411982bfd0b77949688af7fa12a612e

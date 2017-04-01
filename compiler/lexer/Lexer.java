@@ -175,7 +175,11 @@ public class Lexer {
   }
 
   public boolean matchInteger(String word) {
+<<<<<<< HEAD
     return word.matches("-?(0|(\\d)+)");
+=======
+    return word.matches("0|(\\d)+");
+>>>>>>> 69c34e4c1411982bfd0b77949688af7fa12a612e
   }
 
   public boolean matchHalt(String word) {

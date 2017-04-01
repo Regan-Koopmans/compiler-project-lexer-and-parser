@@ -466,7 +466,7 @@ public class Parser {
                     && testSymbols.get(2).getType() == BOOL
                     && testSymbols.get(3).getValue().equals(")")
                     && testSymbols.get(4).getValue().equals("{")
-                    && testSymbols.get(5).getType() == CODE
+                    && (testSymbols.get(5).getType() == CODE || testSymbols.get(5).getType() == PROG)
                     && testSymbols.get(6).getValue().equals("}")) {
                 return true;
             }
@@ -476,7 +476,7 @@ public class Parser {
                     && testSymbols.get(2).getType() == BOOL
                     && testSymbols.get(3).getValue().equals(")")
                     && testSymbols.get(4).getValue().equals("{")
-                    && testSymbols.get(5).getType() == CODE
+                    && (testSymbols.get(5).getType() == CODE || testSymbols.get(5).getType() == PROG)
                     && testSymbols.get(6).getValue().equals("}")) {
                 return true;
             }

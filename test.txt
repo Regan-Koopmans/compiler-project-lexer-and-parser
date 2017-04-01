@@ -1,1 +1,3 @@
-hi="jane";
+while ((a < b)) {
+	output(hi)
+}

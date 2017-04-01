@@ -46,9 +46,6 @@ public class Lexer {
             currentWord += c;
             currentWord = currentWord.replaceAll("^\\s","");
 
-            System.out.println(currentWord);
-
-
             // This block deals with recognising strings. This means strings implicitly
             // take preference over all other tokens (which makes sense since any text
             // should be allowed in  a string.
@@ -123,7 +120,6 @@ public class Lexer {
 
                 if (matchGrouping(currentWord)) {
                     longestToken = new Token(TokenType.Grouping, currentWord, lineNumber);
-                    System.out.println("Matched grouping");
                     matchesAnyPattern = true;
                 }
 

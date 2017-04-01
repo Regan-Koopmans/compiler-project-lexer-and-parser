@@ -955,11 +955,10 @@ public class Parser {
   }
   private boolean shiftShortString(ArrayList<Token> temp)
   {
-    if(tokens.size()<2)
+    if(tokens.size()==0)
       return false;
-    if(tokens.get(0).getType()==TokenType.Assignment && tokens.get(1).getType()==TokenType.ShortString)
+    if(tokens.get(0).getType()==TokenType.ShortString)
     {
-      temp.add(tokens.remove(0));
       temp.add(tokens.remove(0));
       return true;
     }

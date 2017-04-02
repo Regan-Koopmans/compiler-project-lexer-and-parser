@@ -335,7 +335,7 @@ public class Parser {
           return true;
         else if(tokens.size()>0)
         {
-          parsingError("\n"+tokens.get(0).toString()+"\nUnexpected type");
+          parsingError("\n"+tokens.get(0).toString()+"\nExpected grouping token type");
           return false;
         }
         else
@@ -351,7 +351,7 @@ public class Parser {
 			  return true;
 		  else if(tokens.size()>0)
 		  {
-			  parsingError("\n"+tokens.get(0).toString()+"\nUnexpected token type");
+			  parsingError("\n"+tokens.get(0).toString()+"\nExpected grouping token type");
 			  return false;
 		  }
 		  else
@@ -375,7 +375,7 @@ public class Parser {
             return true;
           else
           {
-            parsingError("\n"+tokens.get(0).toString()+"\nExpected grouping symbol");
+            parsingError("\n"+tokens.get(0).toString()+"\nExpected grouping token type");
             return false;
           }
         }
@@ -406,7 +406,7 @@ public class Parser {
           return true;
         else if(tokens.size()>0)
         {
-          parsingError("\n"+tokens.get(0).toString()+"\nUnexpected token type");
+          parsingError("\n"+tokens.get(0).toString()+"\nExpected grouping token type");
           return false;
         }
         else

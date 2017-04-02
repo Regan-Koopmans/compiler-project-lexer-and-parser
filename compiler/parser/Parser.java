@@ -27,7 +27,7 @@ public class Parser {
   //private SyntaxTree tree = new SyntaxTree();
   //private ParseStack stack = new ParseStack();
   private ArrayList<Token> tokens;
-  
+  private ArrayList<Token> accepted;
   
   /*
    * This is still the function that you access in your main
@@ -39,6 +39,12 @@ public class Parser {
    */
   public void parse(ArrayList<Token> t)
   {
+    if(t.size()==0)
+    {
+      parsingError("No tokens to parse");
+      return;
+    }
+	
     tokens=new ArrayList<Token>(t);
     if(shiftProg())
     {
@@ -48,10 +54,19 @@ public class Parser {
        * likely is never used
        */
       if(tokens.size()>0)
+	  {
         parsingError("\n"+tokens.get(0).toString()+"\nUnexpected input");
+		return;
+	  }
       else
         System.out.println("Parsing successful");
+	  accepted=new ArrayList<Token>(t);
+	  buildTree();
     }
+  }
+  private void buildTree()
+  {
+	  
   }
   public Parser()
   {
@@ -150,7 +165,7 @@ public class Parser {
            * message
            * 
            */ 
-          parsingError(tokens.get(0).toString()+"\nExpected \';\' symbol");
+          parsingError("\n"+tokens.get(0).toString()+"\nExpected \';\' symbol");
           return false;
         }
         else
@@ -161,7 +176,7 @@ public class Parser {
            * temp=[tom][=][jane]
            * tokens=[]
            */ 
-          parsingError(t.toString()+"\nExpected more input");
+          parsingError("\n"+t.toString()+"\nExpected more input");
           return false;
         }
       }
@@ -201,12 +216,12 @@ public class Parser {
         }
         else if(tokens.size()>0)
         {
-          parsingError(tokens.get(0).toString()+"\nExpected \'}\' symbol");
+          parsingError("\n"+tokens.get(0).toString()+"\nExpected \'}\' symbol");
           return false;
         }
         else
         {
-          parsingError(t.toString()+"\nExpected input");
+          parsingError("\n"+t.toString()+"\nExpected input");
           return false;
         }
       }
@@ -320,15 +335,31 @@ public class Parser {
           return true;
         else if(tokens.size()>0)
         {
-          parsingError(tokens.get(0).toString()+"\nUnexpected type");
+          parsingError("\n"+tokens.get(0).toString()+"\nUnexpected type");
           return false;
         }
         else
         {
-          parsingError(t.toString()+"\nExpected input");
+          parsingError("\n"+t.toString()+"\nExpected input");
           return false;
         }
       }
+	  else if(tokens.size()>0 && tokens.get(0).getType()==TokenType.Integer)
+	  {
+		  t=tokens.remove(0);
+		  if(tokens.size()>0 && tokens.get(0).getType()==TokenType.Grouping)
+			  return true;
+		  else if(tokens.size()>0)
+		  {
+			  parsingError("\n"+tokens.get(0).toString()+"\nUnexpected token type");
+			  return false;
+		  }
+		  else
+		  {
+			  parsingError("\nExpected input after:\n"+t.toString());
+			  return false;
+		  }
+	  }
       else if(shiftNumberOp(temp))
       {
         /*
@@ -375,12 +406,12 @@ public class Parser {
           return true;
         else if(tokens.size()>0)
         {
-          parsingError(tokens.get(0).toString()+"\nUnexpected token type");
+          parsingError("\n"+tokens.get(0).toString()+"\nUnexpected token type");
           return false;
         }
         else
         {
-          parsingError(t.toString()+"\nExpected input");
+          parsingError("\n"+t.toString()+"\nExpected input");
           return false;
         }
       }
@@ -428,19 +459,19 @@ public class Parser {
           }
           else
           {
-            parsingError(t.toString()+"\nExpected a \'{\' symbol");
+            parsingError("\n"+t.toString()+"\nExpected a \'{\' symbol");
             return false;
           }
         }
         else
         {
-          parsingError(t.toString()+"\nExpected more input");
+          parsingError("\n"+t.toString()+"\nExpected more input");
           return false;
         }
       }
       else
       {
-        parsingError(t.toString()+"\nExpected a user defined name");
+        parsingError("\n"+t.toString()+"\nExpected a user defined name");
         return false;
       }
     }
@@ -526,7 +557,7 @@ public class Parser {
       tokens.remove(0);
       if(tokens.size()<2)
       {
-        parsingError("\nExpected input after:"+t.toString());
+        parsingError("Expected input after:\n"+t.toString());
         return false;
       }
       if(tokens.get(0).getValue().compareTo("<")==0 || tokens.get(0).getValue().compareTo(">")==0)
@@ -959,6 +990,7 @@ public class Parser {
       return false;
     if(tokens.get(0).getType()==TokenType.ShortString)
     {
+      //temp.add(tokens.remove(0));
       temp.add(tokens.remove(0));
       return true;
     }

@@ -384,6 +384,7 @@ public class Parser {
        */ 
       if(shiftShortString(temp))
       {
+        return true;
         /*
          * 
          * If we did assign a short string token then we know that the next token should be a grouping one
@@ -391,56 +392,21 @@ public class Parser {
          * that called shiftUserDefinedName() will take of that accordingly
          * 
          */ 
-        if(tokens.size()>0 && tokens.get(0).getType()==TokenType.Grouping)
-          return true;
-        else if(tokens.size()>0)
-        {
-          parsingError("\n"+tokens.get(0).toString()+"\nExpected grouping token type");
-          return false;
-        }
-        else
-        {
-          parsingError("\n"+t.toString()+"\nExpected input");
-          return false;
-        }
+        
       }
    else if(tokens.size()>0 && tokens.get(0).getType()==TokenType.Integer)
    {
     t=tokens.remove(0);
-    if(tokens.size()>0 && tokens.get(0).getType()==TokenType.Grouping)
-     return true;
-    else if(tokens.size()>0)
-    {
-     parsingError("\n"+tokens.get(0).toString()+"\nExpected grouping token type");
-     return false;
-    }
-    else
-    {
-     parsingError("\nExpected input after:\n"+t.toString());
-     return false;
-    }
+    return true;
+    
    }
       else if(shiftNumberOp(temp))
       {
         /*
          * This is when find out that we are assigning from a number operation
          */ 
-        if(tokens.size()>0)
-        {
-          /*
-           * Again, we just check if the token at the front of the tokens list is a 
-           * group token but we do not care what value it has at the moment
-           */ 
-          if(tokens.get(0).getType()==TokenType.Grouping)
-            return true;
-          else
-          {
-            parsingError("\n"+tokens.get(0).toString()+"\nExpected grouping token type");
-            return false;
-          }
-        }
-        parsingError("\n"+temp.get(temp.size()-1).toString()+"\nExpected input");
-        return false;
+        
+        return true;
       }
       /*
        * 
@@ -453,7 +419,7 @@ public class Parser {
       else if(tokens.size()>0 && tokens.get(0).getType()==TokenType.UserDefinedName)
       {
         temp.add(tokens.remove(0));
-        
+        return true;
         /*
          * 
          * Remove the token and check if the next one is a grouping token
@@ -462,18 +428,7 @@ public class Parser {
          * tokens=[;] or tokens=[{] etc
          * 
          */ 
-        if(tokens.size()>0 && tokens.get(0).getType()==TokenType.Grouping)
-          return true;
-        else if(tokens.size()>0)
-        {
-          parsingError("\n"+tokens.get(0).toString()+"\nExpected grouping token type");
-          return false;
-        }
-        else
-        {
-          parsingError("\n"+t.toString()+"\nExpected input");
-          return false;
-        }
+        
       }
       /*
        * 

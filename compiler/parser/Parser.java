@@ -44,7 +44,7 @@ public class Parser {
       parsingError("No tokens to parse");
       return;
     }
-	
+ 
     tokens=new ArrayList<Token>(t);
     if(shiftProg())
     {
@@ -54,19 +54,19 @@ public class Parser {
        * likely is never used
        */
       if(tokens.size()>0)
-	  {
+   {
         parsingError("\n"+tokens.get(0).toString()+"\nUnexpected input");
-		return;
-	  }
+  return;
+   }
       else
         System.out.println("Parsing successful");
-	  accepted=new ArrayList<Token>(t);
-	  buildTree();
+   accepted=new ArrayList<Token>(t);
+   buildTree();
     }
   }
   private void buildTree()
   {
-	  
+   
   }
   public Parser()
   {
@@ -176,7 +176,7 @@ public class Parser {
            * temp=[tom][=][jane]
            * tokens=[]
            */ 
-          parsingError("\n"+t.toString()+"\nExpected more input");
+          parsingError("\n"+t.toString()+"\nExpected more linput");
           return false;
         }
       }
@@ -344,22 +344,22 @@ public class Parser {
           return false;
         }
       }
-	  else if(tokens.size()>0 && tokens.get(0).getType()==TokenType.Integer)
-	  {
-		  t=tokens.remove(0);
-		  if(tokens.size()>0 && tokens.get(0).getType()==TokenType.Grouping)
-			  return true;
-		  else if(tokens.size()>0)
-		  {
-			  parsingError("\n"+tokens.get(0).toString()+"\nExpected grouping token type");
-			  return false;
-		  }
-		  else
-		  {
-			  parsingError("\nExpected input after:\n"+t.toString());
-			  return false;
-		  }
-	  }
+   else if(tokens.size()>0 && tokens.get(0).getType()==TokenType.Integer)
+   {
+    t=tokens.remove(0);
+    if(tokens.size()>0 && tokens.get(0).getType()==TokenType.Grouping)
+     return true;
+    else if(tokens.size()>0)
+    {
+     parsingError("\n"+tokens.get(0).toString()+"\nExpected grouping token type");
+     return false;
+    }
+    else
+    {
+     parsingError("\nExpected input after:\n"+t.toString());
+     return false;
+    }
+   }
       else if(shiftNumberOp(temp))
       {
         /*
@@ -431,11 +431,11 @@ public class Parser {
      * This when we did not receive an assignment type token in our tokens list
      * 
      * temp=[tom]
-     * tokens=[pot][;]
+     * tokens=[;]
      * 
      */ 
-    parsingError("Expected assignment symbol");
-    return false;
+    tokens.add(0,t);
+    return true;
   }
   
   private boolean shiftProcedure(ArrayList<Token> temp)

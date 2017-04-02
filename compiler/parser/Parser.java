@@ -99,7 +99,27 @@ public class Parser {
         tokens.remove(0);
         if(tokens.size()>0)
         {
-          if(tokens.get(0).getValue().compareTo(";")==0)
+          if(tokens.get(0).getValue().compareTo(";")!=0)
+          {
+            if(tokens.size()>1)
+            {
+              if(tokens.get(0).getValue().compareTo("}")==0)
+              {
+                continue;
+              }
+              else
+              {
+                parsingError("\n"+tokens.get(0).toString()+"\nExpected \";\" symbol");
+                return false;
+              }
+            }
+            else
+            {
+              parsingError("\n"+tokens.get(0).toString()+"\nExpected \";\" symbol");
+              return false;
+            }
+          }
+          else
             tokens.remove(0);
         }
         
@@ -116,7 +136,13 @@ public class Parser {
          * 
          * if the expected input is not given then shiftUserDefinedName() returns false
          * 
-         */ 
+         */
+        if(tokens.size()==0)
+          return true;
+        if(tokens.get(0).getValue().compareTo("}")==0)
+        {
+          continue;
+        }
         if(!shiftUserDefinedName(temp))
           return false;
         /*
@@ -126,10 +152,30 @@ public class Parser {
          * temp=[tom][=][jane]
          * tokens=[;]
          * 
-         */ 
+         */
+        if(tokens.size()==0)
+          return true;
+        if(tokens.get(0).getValue().compareTo("}")==0)
+        {
+          continue;
+        }
         if(tokens.size()>0 && tokens.get(0).getValue().compareTo(";")==0)
         {
-          temp.add(tokens.remove(0));
+          if(tokens.size()>1)
+          {
+            if(tokens.get(1).getValue().compareTo("}")==0)
+            {
+              parsingError("\n"+tokens.get(0).toString()+"\nUnexpected token type");
+              return false;
+            }
+            else
+              tokens.remove(0);
+          }
+          else
+          {
+            parsingError("\n"+tokens.get(0).toString()+"\nUnexpected token type");
+            return false;
+          }
           /*
            * this is when we find a grouping token (;) and we know that this item is complete 
            * 
@@ -167,7 +213,7 @@ public class Parser {
            * temp=[tom][=][jane]
            * tokens=[]
            */ 
-          parsingError("\n"+t.toString()+"\nExpected more linput");
+          parsingError("\n"+t.toString()+"\nExpected more input");
           return false;
         }
       }
@@ -238,14 +284,37 @@ public class Parser {
       {
         if(!shiftIO())
           return false;
-        if(tokens.size()>0)
+        if(tokens.size()==0)
+          return true;
+        if(tokens.get(0).getValue().compareTo("}")==0)
         {
-          if(tokens.get(0).getValue().compareTo(";")==0)
-            tokens.remove(0);
+          return true;
+        }
+        
+        if(tokens.get(0).getValue().compareTo(";")==0)
+        {
+          if(tokens.size()>1)
+          {
+            if(tokens.get(1).getValue().compareTo("}")==0)
+            {
+              parsingError("\n"+tokens.get(0).toString()+"\nUnexpected token type");
+              return false;
+            }
+            else
+            {
+              //System.out.println("k");
+              tokens.remove(0);
+            }
+          }
+          else
+          {
+            parsingError("\n"+tokens.get(0).toString()+"\nUnexpected token type");
+            return false;
+          }
         }
         else
         {
-          parsingError("Expected input at:\n"+t.toString());
+          parsingError("\n"+tokens.get(0).toString()+"\nExpected \";\" symbol");
           return false;
         }
       }
@@ -288,8 +357,7 @@ public class Parser {
      */ 
     if(tokens.size()==0)
     {
-      parsingError("Expected input");
-      return false;
+      return true;
     }
     /*
      * we know that when assigning the next variable in our tokens list should be an assignmnet token eg
@@ -700,14 +768,61 @@ public class Parser {
         return false;
       if(!isThen())
         return false;
+      if(tokens.size()==0)
+          return true;
+      if(tokens.get(0).getValue().compareTo("}")==0)
+      {
+        return true;
+      }
       if(tokens.size()>0&&tokens.get(0).getValue().compareTo(";")==0)
-        tokens.remove(0);
+      {
+        if(tokens.size()>1)
+        {
+          if(tokens.get(1).getValue().compareTo("}")==0)
+          {
+            parsingError("\n"+tokens.get(0).toString()+"\nUnexpected token type");
+            return false;
+          }
+          else
+          {
+            tokens.remove(0);
+            return true;
+          }
+        }
+        else
+        {
+          parsingError("\n"+tokens.get(0).toString()+"\nUnexpected token type");
+          return false;
+        }
+      }
       else if(isElse())
       {
+        if(tokens.size()==0)
+          return true;
+      if(tokens.get(0).getValue().compareTo("}")==0)
+      {
+        return true;
+      }
         if(tokens.size()>0 &&tokens.get(0).getValue().compareTo(";")==0)
         {
-          tokens.remove(0);
-          return true;
+          if(tokens.size()>1)
+          {
+            if(tokens.get(1).getValue().compareTo("}")==0)
+            {
+              parsingError("\n"+tokens.get(0).toString()+"\nUnexpected token type");
+              return false;
+            }
+            else
+            {
+              tokens.remove(0);
+              return true;
+            }
+          }
+          else
+          {
+            parsingError("\n"+tokens.get(0).toString()+"\nUnexpected token type");
+            return false;
+          }
         }
         else if(tokens.size()>0)
         {
@@ -752,17 +867,42 @@ public class Parser {
       }
       tokens.remove(0);
       if(tokens.size()==0)
+          return true;
+      if(tokens.get(0).getValue().compareTo("}")==0)
       {
-        parsingError("Expected \";\" symbol");
-        return false;
+        return true;
       }
-      if(tokens.get(0).getValue().compareTo(";")!=0)
+      if(tokens.size()>0 &&tokens.get(0).getValue().compareTo(";")==0)
+      {
+        if(tokens.size()>1)
+        {
+          if(tokens.get(1).getValue().compareTo("}")==0)
+          {
+            parsingError("\n"+tokens.get(0).toString()+"\nUnexpected token type");
+            return false;
+          }
+          else
+          {
+            tokens.remove(0);
+            return true;
+          }
+        }
+        else
+        {
+          parsingError("\n"+tokens.get(0).toString()+"\nUnexpected token type");
+          return false;
+        }
+      }
+      else if(tokens.size()>0)
       {
         parsingError("\n"+tokens.get(0).toString()+"\nExpected \";\" symbol");
         return false;
       }
-      tokens.remove(0);
-      return true;
+      else
+      {
+        parsingError("Expected input");
+        return false;
+      }
     }
     else if(temp.get(temp.size()-1).getValue().compareTo("for")==0)
     {
@@ -934,18 +1074,45 @@ public class Parser {
         return false;
       } 
       tokens.remove(0);
+      
       if(tokens.size()==0)
+          return true;
+      else if(tokens.get(0).getValue().compareTo("}")==0)
       {
-        parsingError("Expected \";\" symbol");
-        return false;
+        return true;
       }
-      if(tokens.get(0).getValue().compareTo(";")!=0)
-      {
-        parsingError("\n"+tokens.get(0).toString()+"\nExpected \";\" symbol");
-        return false;
-      }
-      tokens.remove(0);
-      return true;
+      
+      if(tokens.size()>0 &&tokens.get(0).getValue().compareTo(";")==0)
+        {
+          if(tokens.size()>1)
+          {
+            if(tokens.get(1).getValue().compareTo("}")==0)
+            {
+              parsingError("\n"+tokens.get(0).toString()+"\nUnexpected token type");
+              return false;
+            }
+            else
+            {
+              tokens.remove(0);
+              return true;
+            }
+          }
+          else
+          {
+            parsingError("\n"+tokens.get(0).toString()+"\nUnexpected token type");
+            return false;
+          }
+        }
+        else if(tokens.size()>0)
+        {
+          parsingError("\n"+tokens.get(0).toString()+"\nExpected \";\" symbol");
+          return false;
+        }
+        else
+        {
+          parsingError("Expected input");
+          return false;
+        }
     }
     return false;
   }

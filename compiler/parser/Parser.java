@@ -99,12 +99,7 @@ public class Parser {
         tokens.remove(0);
         if(tokens.size()>0)
         {
-          if(tokens.get(0).getValue().compareTo(";")!=0)
-          {
-            parsingError("\n"+tokens.get(0).toString()+"\nExpected \";\" symbol");
-            return false;
-          }
-          else
+          if(tokens.get(0).getValue().compareTo(";")==0)
             tokens.remove(0);
         }
         
@@ -220,28 +215,7 @@ public class Parser {
           parsingError("\n"+t.toString()+"\nExpected input");
           return false;
         }
-        if(tokens.size()>0 && tokens.get(0).getValue().compareTo(";")==0)
-        {
-          /*
-           * 
-           * At the end of it we know that the last token should be a grouping token AND "}"
-           * 
-           * temp=[proc][hello][{][ ... PROG ...]
-           * tokens=[}][... CODE ...]
-           * 
-           */ 
-          temp.add(tokens.remove(0));
-        }
-        else if(tokens.size()>0)
-        {
-          parsingError("\n"+tokens.get(0).toString()+"\nExpected \';\' symbol");
-          return false;
-        }
-        else
-        {
-          parsingError("\n"+t.toString()+"\nExpected input");
-          return false;
-        }
+        
       }
       else if(NodeType.fromTokenType(t.getType())==NodeType.Control 
                 &&(t.getValue().compareTo("if")==0 || t.getValue().compareTo("for")==0 || t.getValue().compareTo("while")==0))

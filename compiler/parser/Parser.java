@@ -107,11 +107,7 @@ public class Parser {
           else
             tokens.remove(0);
         }
-        else
-        {
-          parsingError("\n"+t.toString()+"\nExpected input");
-          return false;
-        }
+        
       }
       else if(NodeType.fromTokenType(t.getType())==NodeType.UserDefinedName)
       {
@@ -217,6 +213,28 @@ public class Parser {
         else if(tokens.size()>0)
         {
           parsingError("\n"+tokens.get(0).toString()+"\nExpected \'}\' symbol");
+          return false;
+        }
+        else
+        {
+          parsingError("\n"+t.toString()+"\nExpected input");
+          return false;
+        }
+        if(tokens.size()>0 && tokens.get(0).getValue().compareTo(";")==0)
+        {
+          /*
+           * 
+           * At the end of it we know that the last token should be a grouping token AND "}"
+           * 
+           * temp=[proc][hello][{][ ... PROG ...]
+           * tokens=[}][... CODE ...]
+           * 
+           */ 
+          temp.add(tokens.remove(0));
+        }
+        else if(tokens.size()>0)
+        {
+          parsingError("\n"+tokens.get(0).toString()+"\nExpected \';\' symbol");
           return false;
         }
         else
@@ -708,7 +726,28 @@ public class Parser {
         return false;
       if(!isThen())
         return false;
-      return isElse();
+      if(tokens.size()>0&&tokens.get(0).getValue().compareTo(";")==0)
+        tokens.remove(0);
+      else if(isElse())
+      {
+        if(tokens.size()>0 &&tokens.get(0).getValue().compareTo(";")==0)
+        {
+          tokens.remove(0);
+          return true;
+        }
+        else if(tokens.size()>0)
+        {
+          parsingError("\n"+tokens.get(0).toString()+"\nExpected \";\" symbol");
+          return false;
+        }
+        else
+        {
+          parsingError("Expected input");
+          return false;
+        }
+      }
+      else
+        return false;
     }
     else if(temp.get(temp.size()-1).getValue().compareTo("while")==0)
     {
@@ -735,6 +774,17 @@ public class Parser {
       if(tokens.get(0).getValue().compareTo("}")!=0)
       {
         parsingError("\n"+tokens.get(0).toString()+"\nExpected \"}\" symbol");
+        return false;
+      }
+      tokens.remove(0);
+      if(tokens.size()==0)
+      {
+        parsingError("Expected \";\" symbol");
+        return false;
+      }
+      if(tokens.get(0).getValue().compareTo(";")!=0)
+      {
+        parsingError("\n"+tokens.get(0).toString()+"\nExpected \";\" symbol");
         return false;
       }
       tokens.remove(0);
@@ -909,6 +959,17 @@ public class Parser {
         parsingError("\n"+tokens.get(0).toString()+"\nExpected \"}\" symbol");
         return false;
       } 
+      tokens.remove(0);
+      if(tokens.size()==0)
+      {
+        parsingError("Expected \";\" symbol");
+        return false;
+      }
+      if(tokens.get(0).getValue().compareTo(";")!=0)
+      {
+        parsingError("\n"+tokens.get(0).toString()+"\nExpected \";\" symbol");
+        return false;
+      }
       tokens.remove(0);
       return true;
     }

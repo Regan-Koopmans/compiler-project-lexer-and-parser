@@ -94,35 +94,39 @@ public class Parser {
        * We check if the token at the beginning is a user defined name
        * 
        */ 
-      if(NodeType.fromTokenType(t.getType())==NodeType.Halt)
-      {
-        tokens.remove(0);
-        if(tokens.size()>0)
-        {
-          if(tokens.get(0).getValue().compareTo(";")!=0)
-          {
-            if(tokens.size()>1)
-            {
-              if(tokens.get(0).getValue().compareTo("}")==0)
-              {
-                continue;
-              }
-              else
-              {
-                parsingError("\n"+tokens.get(0).toString()+"\nExpected \";\" symbol");
-                return false;
-              }
-            }
-            else
-            {
-              parsingError("\n"+tokens.get(0).toString()+"\nExpected \";\" symbol");
-              return false;
-            }
-          }
-          else
-            tokens.remove(0);
-        }
-        
+	if(NodeType.fromTokenType(t.getType())==NodeType.Halt)
+	{
+		tokens.remove(0);
+		if(tokens.size()>0)
+		{
+			if(tokens.get(0).getValue().compareTo("}")==0)
+				return true;
+			if(tokens.get(0).getValue().compareTo(";")==0)
+			{
+				if(tokens.size()>1)
+				{
+					if(tokens.get(1).getValue().compareTo("}")==0)
+					{
+						parsingError("\n"+tokens.get(0).toString()+"\nUnexpected token type");
+						return false;
+					}
+					else
+						tokens.remove(0);
+				}
+				else
+				{
+					parsingError("\n"+tokens.get(0).toString()+"\nUnexpected token type");
+					return false;
+				}
+			}
+			else
+			{
+				parsingError("\n"+tokens.get(0).toString()+"\nUnexpected token type");
+				return false;
+			}
+		}
+		else
+			return true;
       }
       else if(NodeType.fromTokenType(t.getType())==NodeType.UserDefinedName)
       {

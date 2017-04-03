@@ -11,6 +11,8 @@ import java.lang.StringBuilder;
 import java.util.ArrayList;
 import compiler.lexer.Token;
 
+import java.io.PrintWriter;
+
 // This class is used to encapsulate a unit of syntax. This includes both
 // leaves, which are tokens that appear in the source code, or higher-level
 // concepts that we obtain from the production rules.
@@ -62,16 +64,23 @@ public class SyntaxNode {
     private String value;
     int lineNumber = -1;
 
+    private static PrintWriter writer;
 
     // Some logic to make printing the tree more presentable :)
 
     public void print() {
+        try {
+            writer = new PrintWriter("output.tree", "UTF-8");
+        } catch (Exception e) {
+            System.out.println("Could not write tree to file!");
+        }
         print("", true);
+        writer.close();
     }
 
     private void print(String prefix, boolean isTail) {
 
-        System.out.println(prefix + (isTail ? "└── " : "├── ") + type.toString());
+        writer.println(prefix + (isTail ? "└── " : "├── ") + type.toString());
 
         if (children != null) {
             for (int i = 0; i < children.size() - 1; i++) {
@@ -85,16 +94,6 @@ public class SyntaxNode {
 
 
     }
-
-    // A function that adds n children to a node
-
-    // public void addChildren(SyntaxNode...newChildren) {
-    //     if (children == null) { children = new ArrayList<SyntaxNode>();}
-    //     for (SyntaxNode child:newChildren) {
-    //         children.add(child);
-    //         System.out.println("Adding children");
-    //     }
-    // }
 
     public void addChildren(ArrayList<SyntaxNode> newChildren) {
         if (children == null) {

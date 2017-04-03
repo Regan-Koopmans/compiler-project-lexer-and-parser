@@ -1,22 +1,4 @@
-
-input(x) ;
-
-num = x ;
-
-res = "unknown";
-
-str = "even" ;
-
-checknumber ;
-
-if ( eq (res, str) ) 
-then { output(hi) }
-else { output(hello) };
-
-halt ;
-
-while ( (a < a ) ) 
-{ 
-	output(hi) 
-
-}
+if (( a < a )) then {
+	output(hi);
+	halt
+};

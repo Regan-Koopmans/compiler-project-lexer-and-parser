@@ -12,6 +12,8 @@ import compiler.lexer.Token;
 import java.util.Collections;
 import static compiler.parser.NodeType.*;
 
+
+
 public class Parser {
 
     private SyntaxTree tree = new SyntaxTree();
@@ -45,13 +47,14 @@ public class Parser {
         for (Token t : tokens) {
             shift(t);
             System.out.println(stack);
-            while (reduce()) {}
+            while (reduce()) {
+              System.out.println(stack);
+            }
             System.out.println(stack);
         }
 
         // continue to reduce while reductions can be made.
         while (reduce()) {}
-        System.out.println(stack);
 
         ArrayList<SyntaxNode> testSymbols;
         int size = stack.size();
@@ -75,9 +78,7 @@ public class Parser {
             System.out.println(stack);
         } else {
             System.out.println("\n\u001B[32mParsing succeeded.\u001B[0m\n");
-            System.out.println("Syntax tree generated : \n");
             stack.peek(1).get(0).print();
-            System.out.println();
         }
 
         // I am just printing the stack here to see if anything
@@ -251,7 +252,6 @@ public class Parser {
             }
 
         }
-
         return reduceMade;
     }
 
@@ -259,7 +259,7 @@ public class Parser {
 
         if (testSymbols.size() == 1) {
             SyntaxNode test = testSymbols.get(0);
-            if (   test.getType() == Halt
+            if (       test.getType() == Halt
                     || test.getType() == IOCALL
                     || test.getType() == CALL
                     || test.getType() == ASSIGN
@@ -348,6 +348,12 @@ public class Parser {
                 return true;
 
 
+            } else if (testSymbols.get(0).getType() == CODE &&
+                       testSymbols.get(1).getValue().equals(";") &&
+                       testSymbols.get(2).getType() == INSTR) {
+                return true;
+
+
             }
         }
         return false;
@@ -428,20 +434,20 @@ public class Parser {
     public boolean reducePROG(ArrayList<SyntaxNode> testSymbols) {
         int size = testSymbols.size();
         if (size == 1) {
-            if (testSymbols.get(0).getType() == CODE) {
+          if (testSymbols.get(0).getType() == CODE) {
                 return true;
             }
-        } else if (size == 2) {
-                if (testSymbols.get(0).getType() == CODE
-                        && testSymbols.get(1).getType() == PROC_DEFS) {
-                    return true;
-                }
+        }
+        else if (size == 2) {
+            if (testSymbols.get(0).getType() == CODE
+                && testSymbols.get(1).getValue().equals(";")) {
+                return true;
+            }
 
-                if (testSymbols.get(0).getType() == CODE
-                        && testSymbols.get(1).getValue().equals(";")) {
-                    return true;
-                }
-
+            if (testSymbols.get(0).getType() == PROG
+                && testSymbols.get(1).getType() == CODE) {
+                return true;
+            }
         } else if (size == 3) {
 
                 if (testSymbols.get(0).getType() == CODE
@@ -486,11 +492,26 @@ public class Parser {
         } else if (size == 22) {
             if (testSymbols.get(0).getValue().equals("for")
                     && testSymbols.get(1).getValue().equals("(")
-                    && testSymbols.get(2).getType() == BOOL
-                    && testSymbols.get(3).getValue().equals(")")
-                    && testSymbols.get(4).getValue().equals("{")
-                    && (testSymbols.get(5).getType() == CODE || testSymbols.get(5).getType() == PROG)
-                    && testSymbols.get(6).getValue().equals("}")) {
+                    && testSymbols.get(2).getType() == VAR
+                    && testSymbols.get(3).getValue().equals("=")
+                    && testSymbols.get(4).getValue().equals("0")
+                    && testSymbols.get(5).getValue().equals(";")
+                    && testSymbols.get(6).getType() == VAR
+                    && testSymbols.get(7).getValue().equals("<")
+                    && testSymbols.get(8).getType() == VAR
+                    && testSymbols.get(9).getValue().equals(";")
+                    && testSymbols.get(10).getType() == VAR
+                    && testSymbols.get(11).getValue().equals("=")
+                    && testSymbols.get(12).getValue().equals("add")
+                    && testSymbols.get(13).getValue().equals("(")
+                    && testSymbols.get(14).getType() == VAR
+                    && testSymbols.get(15).getValue().equals(",")
+                    && testSymbols.get(16).getValue().equals("1")
+                    && testSymbols.get(17).getValue().equals(")")
+                    && testSymbols.get(18).getValue().equals(")")
+                    && testSymbols.get(19).getValue().equals("{")
+                    && (testSymbols.get(20).getType() == CODE || testSymbols.get(5).getType() == PROG)
+                    && testSymbols.get(21).getValue().equals("}")) {
                 return true;
             }
         }
@@ -573,7 +594,6 @@ public class Parser {
         }
         return false;
     }
-
 
     public boolean reduceCALL(ArrayList<SyntaxNode> testSymbols) {
         if (testSymbols.size() == 2) {

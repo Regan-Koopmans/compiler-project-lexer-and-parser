@@ -1,0 +1,32 @@
+└── PROG
+    └── CODE
+        ├── CODE
+        │   └── INSTR
+        │       └── COND_BRANCH
+        │           ├── Control
+        │           ├── Grouping
+        │           ├── BOOL
+        │           │   ├── Grouping
+        │           │   ├── VAR
+        │           │   │   └── User Defined Name
+        │           │   ├── Comparison
+        │           │   ├── VAR
+        │           │   │   └── User Defined Name
+        │           │   └── Grouping
+        │           ├── Grouping
+        │           ├── Control
+        │           ├── Grouping
+        │           ├── PROG
+        │           │   └── CODE
+        │           │       └── INSTR
+        │           │           └── IO-CALL
+        │           │               ├── IO
+        │           │               ├── Grouping
+        │           │               ├── VAR
+        │           │               │   └── User Defined Name
+        │           │               └── Grouping
+        │           ├── Grouping
+        │           └── Grouping
+        └── CODE
+            └── INSTR
+                └── Halt

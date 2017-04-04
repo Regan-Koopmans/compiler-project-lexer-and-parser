@@ -53,10 +53,6 @@ class Main {
 
     } catch (Exception e) { fatalError("There was a problem reading the file"); }
 
-    for (Token token:lex.getTokens()) {
-      System.out.println(token);
-      System.out.println("");
-    }
 
     // Invoke the parser, passing the list of tokens
     parser.parse(lex.getTokens());

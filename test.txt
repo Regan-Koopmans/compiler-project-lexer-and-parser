@@ -3,7 +3,7 @@ output(hello);
 proc jane
 {
    io=add(add(-7,8),add(5,sub(8,9)));
-   hi="jane #";
+   hi="jane";
    input(ty);
    if(not eq(monty,ere))
    then

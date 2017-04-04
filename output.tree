@@ -1,0 +1,18 @@
+└── PROG
+    └── CODE
+        ├── CODE
+        │   └── INSTR
+        │       └── ASSIGN
+        │           ├── VAR
+        │           │   └── User Defined Name
+        │           ├── Assignment
+        │           └── NUMEXPR
+        │               └── Integer
+        ├── Grouping
+        └── INSTR
+            └── IO-CALL
+                ├── IO
+                ├── Grouping
+                ├── VAR
+                │   └── User Defined Name
+                └── Grouping

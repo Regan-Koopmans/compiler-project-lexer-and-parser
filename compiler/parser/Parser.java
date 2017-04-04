@@ -66,7 +66,8 @@ public class Parser {
   }
   private void buildTree()
   {
-   
+	RegansClass rc = new RegansClass();
+	rc.parse(accepted);   
   }
   public Parser()
   {

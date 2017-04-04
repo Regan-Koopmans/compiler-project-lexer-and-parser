@@ -46,11 +46,8 @@ public class RegansClass {
 
         for (Token t : tokens) {
             shift(t);
-            System.out.println(stack);
             while (reduce()) {
-              System.out.println(stack);
             }
-            System.out.println(stack);
         }
 
         // continue to reduce while reductions can be made.
@@ -71,15 +68,7 @@ public class RegansClass {
 
         }
 
-        if (stack.size() != 1 || stack.peek(1).get(0).getType() != PROG) {
-            System.out.println("\n\u001B[31mSyntax error!\u001B[0m");
-            System.out.println("Unexpected input near \"" + stack.peek(1).get(0).getValueRecursive() +
-                               "\" on line " + stack.peek(1).get(0).getLineRecursive() + ".\n");
-            System.out.println(stack);
-        } else {
-            System.out.println("\n\u001B[32mParsing succeeded.\u001B[0m\n");
-            stack.peek(1).get(0).print();
-        }
+        stack.peek(1).get(0).print();
 
         // I am just printing the stack here to see if anything
         // happened to the stack.
